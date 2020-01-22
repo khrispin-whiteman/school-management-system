@@ -1,0 +1,66 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>A-SMS Staff List</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+
+</head>
+<body>
+
+<div class="container">
+    <h2>
+        {% for school in schooldetails %}
+        <center>
+            <img src="{{ school.photo.url }}" id="icon" class="logo" style="height: 80px">
+            <br>
+            <b>{{ school.schoolname | upper }}</b>
+
+{#            {% if request.user.is_student %}#}
+{#                <br>#}
+{#                {{ request.user.get_full_name | capfirst }}'s Payment History#}
+{#            {% endif %}#}
+
+        </center>
+            <br>
+            <p><small>All Staff Report</small></p>
+            {% empty %}
+                <center>No School Name Found In DB</center>
+        {% endfor %}
+    </h2>
+    <p>All Staff List</p>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Username</th>
+            <th>Firstname</th>
+            <th>Lastname</th>
+            <th>Mobile</th>
+            <th>Address</th>
+            <th>Role</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        {% for staff in staff %}
+            <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{% if staff.username %} {{ staff.username }} {% else %} N/A  {% endif %}</td>
+                <td>{% if staff.first_name %} {{ staff.first_name }} {% else %} N/A  {% endif %}</td>
+                <td>{% if staff.last_name %} {{ staff.last_name }} {% else %} N/A {% endif %}</td>
+                <td>{% if staff.phone %} {{ staff.phone }} {% else %}
+                    <span class="red-text">N/A</span>{% endif %}</td>
+                <td>{% if staff.address %} {{ staff.address }} {% else %} N/A {% endif %}</td>
+                <td>{% if staff.is_superuser %} Superuser {% else %} Teacher {% endif %}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

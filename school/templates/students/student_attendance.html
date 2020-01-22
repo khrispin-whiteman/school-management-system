@@ -1,0 +1,125 @@
+{% extends 'school/base.html' %}
+
+{% block title %} Mark Attendance | A-SMS {% endblock title %}
+
+{% block side_bar %}
+    {% include 'school/partial_active_element.html' with active='students' %}
+{% endblock %}
+{% block content %}
+    <style type="text/css">
+        .table-wrapper-scroll-y {
+            display: block;
+            max-height: 350px;
+            overflow-y: auto;
+            -ms-overflow-style: -ms-autohiding-scrollbar;
+        }
+    </style>
+    <div class="container-fluid mt-5">
+
+        <!-- Heading -->
+        <div class="card mb-4 wow fadeIn">
+
+            <!--Card content-->
+            <div class="card-body d-sm-flex justify-content-between">
+
+                <h6 class="mb-2 mb-sm-0 pt-1">
+                    <a href="">Attendance </a>
+                    <span>/</span>
+                    {% if request.user.is_student %}
+                        <span>{{ request.user.get_full_name }}</span>
+                    {% endif %}
+                </h6>
+            </div>
+
+        </div>
+        {% if request.user.is_student %}
+            <!-- Heading -->
+            <h6 class="mb-2 mb-sm-0 pt-1">
+                {#                {% if class_count > 0 %}#}
+                {#                    <a href="{% url 'add_new_student' %}" class="btn btn-default btn-rounded mb-4">#}
+                {#                       Add New {{ user_type }}#}
+                {#                    </a>#}
+                {#                {% else %}#}
+                {#                    <a href="" class="btn btn-grey btn-rounded mb-4">#}
+                {#                       Add New {{ user_type }}#}
+                {#                    </a>#}
+                {#                    <i style="color: red;">First Add atleast one class</i> <a href="{% url 'add_new_school_class' %}"><i>here</i></a>#}
+                {#                {% endif %}#}
+
+                <a class="pull-right btn btn-default btn-rounded mb-3" href="" class="btn btn-default btn-rounded mb-4">
+                    <i class="fa fa-file-pdf-o" aria-hidden="true"></i> PDF
+                </a>
+            </h6>
+        {% endif %}
+
+        <!--Card content-->
+        <div class="table-wrapper-scroll-y">
+
+            {% if request.user.is_parent %}
+                <div class="list-group">
+                    {% for stud in students %}
+                        <div class="list-group-item">
+                            <a href="{% url 'parent_payment_history_view' stud.id %}">
+                                {{ stud.user.get_full_name }}, Grade: {{ stud.level }}
+                            </a>
+                        </div>
+                    {% empty %}
+                        No Students Assigned!
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {% if request.user.is_student %}
+                <table class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">ID Number</th>
+                        <th scope="col">Firstname</th>
+                        <th scope="col">Lastname</th>
+                        <th scope="col">Grade</th>
+                        <th scope="col">Picture</th>
+                        {% if request.user.is_lecturer %}
+                            <th scope="col">MARK</th>
+                        {% endif %}
+                    </tr>
+                    </thead>
+                    {% for student in studentattendance %}
+                        <tbody>
+                        <tr>
+                            <th scope="row">{{ forloop.counter }}</th>
+                            <td>{{ student.student.id_number }}</td>
+.                           <td>{{ student.student.user.first_name }}</td>
+.                           <td>{{ student.student.user.last_name }}</td>
+                            <td>{{ student.student.level }}</td>
+                            <td><img width="30" src="{{ student.student.user.get_picture }}" alt="{{ staff.username }}'s image">
+                            </td>
+                            {% if request.user.is_lecturer %}
+                                <td>
+                                    <a href="{% url 'student_details' student.id %}" data-toggle="tooltip" title="View"
+                                       class="blue-text"><i class="fa fa-user"></i></a>
+                                    <input type="checkbox">
+                                </td>
+                            {% endif %}
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td>
+                          <span>
+                              No Attendance Record!
+                          </span>
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        </tbody>
+                    {% endfor %}
+                </table>
+            {% endif %}
+        </div>
+    </div>
+    <br>
+{% endblock %}

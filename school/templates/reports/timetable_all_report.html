@@ -1,0 +1,92 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Timetable | A-SMS</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="{% static 'school/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+</head>
+<body>
+
+<div class="container">
+    <h2>
+        {% for school in schooldetails %}
+        <center>
+            <img src="{{ school.photo.url }}" id="icon" class="logo" style="height: 80px">
+            <br>
+            <b>{{ school.schoolname | upper }}</b>
+
+{#            {% if request.user.is_student %}#}
+{#                <br>#}
+{#                {{ request.user.get_full_name | capfirst }}'s Payment History#}
+{#            {% endif %}#}
+
+        </center>
+            <br>
+            <p><small>Class Timetable</small></p>
+            {% empty %}
+                <center>No School Name Found In DB</center>
+        {% endfor %}
+    </h2>
+
+    <table class="table table-bordered" style="background-color: white">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Course Code</th>
+            <th scope="col">Course Title</th>
+            <th scope="col">Day</th>
+            <th scope="col">Start Time</th>
+            <th scope="col">End Time</th>
+            <th scope="col">Venue</th>
+            <th scope="col">Description</th>
+            {% if request.user.is_superuser %}
+                <th scope="col">Action</th>
+            {% endif %}
+        </tr>
+        </thead>
+        {% for timetable in timetables %}
+            <tbody>
+            <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{ timetable.course.courseCode }}</td>
+                <td>{{ timetable.course.courseTitle }}</td>
+                <td>{{ timetable.day }}</td>
+                <td>{{ timetable.start_time }}</td>
+                <td>{{ timetable.end_time }}</td>
+                <td>{{ timetable.venue }}</td>
+                <td>{{ timetable.description }}</td>
+                {% if request.user.is_superuser %}
+                    <td>
+                        <a data-toggle="tooltip" title="view" class="blue-text"><i class="fa fa-eye"></i></a>
+                        <a data-toggle="tooltip" href="" title="edit" class="teal-text"><i class="fa fa-pencil"></i></a>
+                        <a data-toggle="tooltip" href="" title="delete" class="red-text"><i class="fa fa-times"></i></a>
+                    </td>
+                {% endif %}
+            </tr>
+            </tbody>
+        {% empty %}
+            <tbody>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>
+          <span class="text-center">
+            No Timetable Found!
+          </span>
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            </tbody>
+        {% endfor %}
+    </table>
+</div>
+
+</body>
+</html>

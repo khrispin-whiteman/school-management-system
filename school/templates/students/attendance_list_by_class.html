@@ -1,0 +1,64 @@
+{% extends 'school/base.html' %}
+
+{% block title %} Student Attendance | A-SMS {% endblock title %}
+
+{% block side_bar %}
+    {% include 'school/partial_active_element.html' with active='students' %}
+{% endblock %}
+{% block content %}
+    <style type="text/css">
+        .table-wrapper-scroll-y {
+            display: block;
+            max-height: 350px;
+            overflow-y: auto;
+            -ms-overflow-style: -ms-autohiding-scrollbar;
+        }
+    </style>
+    <div class="container-fluid mt-5">
+
+        <!-- Heading -->
+        <div class="card mb-4 wow fadeIn">
+
+            <!--Card content-->
+            <div class="card-body d-sm-flex justify-content-between">
+
+                <h6 class="mb-2 mb-sm-0 pt-1">
+                    <a href="/">Home Page</a>
+                    <span>/</span>
+                    <span>{{ user_type }}</span>
+                </h6>
+            </div>
+
+        </div>
+        {% if request.user.is_superuser %}
+            <!-- Heading -->
+            <h6 class="mb-2 mb-sm-0 pt-1">
+{#            {% for schoolclass in school_class %}#}
+{#                <a href="{% url 'add_new_student' %}" class="btn btn-default btn-rounded mb-4">#}
+{#                    Add New {{ user_type }}#}
+{#                </a>#}
+{#            {% endfor %}#}
+                <a class="pull-right btn btn-default btn-rounded mb-3" href="" class="btn btn-default btn-rounded mb-4">
+                    <i class="fa fa-file-pdf-o" aria-hidden="true"></i> PDF
+                </a>
+            </h6>
+        {% endif %}
+
+        <!--Card content-->
+        <div class="table-wrapper-scroll-y">
+
+
+            <div class="list-group">
+                {% for schoolclass in school_class %}
+                    <div class="list-group-item">
+                        <a href="{% url 'student_attendance_archive' schoolclass.id %}">
+                            Grade: {{ schoolclass.grade }}{{ schoolclass.classname }}
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+
+        </div>
+    </div>
+    <br>
+{% endblock %}

@@ -1,0 +1,87 @@
+{% extends 'school/base.html' %}
+
+{% block title %} Manage Class | A-SMS {% endblock title %}
+
+{% block side_bar %}
+    {% include 'school/partial_active_element.html' with active='students' %}
+{% endblock side_bar %}
+
+{% block content %}
+    <div class="container-fluid mt-5">
+        <div class="card">
+
+            <h5 class="card-header info-color white-text text-center py-4">
+                <strong>Create Class</strong>
+            </h5>
+
+            <div class="card-body px-lg-5 pt-0">
+
+                <form method="post" class="md-form" style="color: #757575;">
+                    {% csrf_token %}
+                    <div class="form-row">
+                        <div class="col">
+                            <!-- Grdae -->
+                            <div class="md-form">
+                                {{ form.grade }}
+                            </div>
+                        </div>
+                        <div class="col">
+                            <!-- Class name -->
+                            <div class="md-form">
+                                {{ form.classname }}
+                                <label for="materialRegisterFormLastName">{{ form.classname.label }}</label>
+                            </div>
+                        </div>
+                    </div>
+
+
+{#                    {% for teacher in teachers %}#}
+{#                        {% if teacher.count == 0 %}#}
+                            <div class="form-row">
+                                <div class="col">
+                                    <!-- Class teacher name -->
+                                    <div class="md-form">
+                                        {{ form.classteacher }}
+                                    </div>
+                                </div>
+
+                            </div>
+{#                        {% else %}#}
+{#                            <span class="badge badge-primary badge-pill">#}
+{#                                No lecturer found,#}
+{#                                <i>#}
+{#                                <a href="{% url 'add_new_staff' %}" style="color: white">Add Lecturer here</a>#}
+{#                                    </i>#}
+{#                                </span>#}
+{#                        {% endif %}#}
+{#                    {% endfor %}#}
+
+                    <div class="form-row">
+                        <div class="card-body">
+                            <ul class="list-group">
+                                {% for course in form.courses %}
+                                    <li class="list-group-item btn-block " style="height: 20px;">
+                                        {{ course }}
+                                        {% empty %}
+                                        <span class="badge badge-primary badge-pill">
+                                          No Course Available
+                                          <a href="{% url 'add_new_course' %}"><i style="color: #ffffff">Create Now</i></a>
+                                        </span>
+                                    </li>
+                                    <br><br>
+                                {% endfor %}
+                            </ul>
+                            <span class="badge badge-primary badge-pill pull-right">
+                                All Classes{{ form.courses|length|pluralize }}:{{ form.courses|length }}
+                            </span>
+                        </div>
+                    </div>
+                    <button class="btn btn-outline-info btn-rounded btn-block my-4 waves-effect z-depth-0"
+                            type="submit">
+                        Save
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

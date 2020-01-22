@@ -1,0 +1,113 @@
+{% extends 'school/base.html' %}
+
+{% block side_bar %}
+    {% include 'school/partial_active_element.html' with active='course_list' %}
+{% endblock side_bar %}
+
+{% block title %} {{ request.user.username }}'s Pay History | A-SMS {% endblock title %}
+
+{% block content %}
+    <style type="text/css">
+        .table-wrapper-scroll-y {
+            display: block;
+            max-height: 350px;
+            overflow-y: auto;
+            -ms-overflow-style: -ms-autohiding-scrollbar;
+        }
+    </style>
+
+    <div class="container-fluid mt-5">
+        <!-- Heading -->
+        <div class="card mb-4 wow fadeIn">
+            <!--Card content-->
+            <div class="card-body d-sm-flex justify-content-between">
+                <h6 class="mb-2 mb-sm-0 pt-1">
+                    <a href="/">Home Page</a>
+                    <span>/</span>
+                    <span>Payments History</span>
+                </h6>
+                {% if request.user.is_student %}
+                    <h6 class="mb-2 mb-sm-0 pt-1">
+                        <a href="{% url 'payments_history_report' %}" class="btn btn-primary btn-sm">
+                            Generate Payment Report
+                        </a>
+                    </h6>
+                {% endif %}
+            </div>
+        </div>
+
+        {% if request.user.is_parent %}
+            <div class="list-group">
+                {% for stud in students %}
+                    <div class="list-group-item">
+                        <a href="{% url 'parent_payment_history_view' stud.id %}">
+                            {{ stud.user.get_full_name }}, Grade: {{ stud.level }}
+                        </a>
+                    </div>
+                {% empty %}
+                    No Students Assigned!
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% if request.user.is_student %}
+            <div class="table-wrapper-scroll-y">
+
+                <table class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Semester</th>
+                        <th scope="col">Fees To Be Paid</th>
+                        <th scope="col">Total Amount Paid</th>
+                        <th scope="col">Actual Amount Paid</th>
+                        <th scope="col">Balance</th>
+                        <th scope="col">Payment Status</th>
+                        <th scope="col">Date Of Payment</th>
+                    </tr>
+                    </thead>
+                    {% for fee in schoolfees %}
+                        <tbody>
+                        <tr>
+                            <th scope="row">{{ forloop.counter }}</th>
+                            <td>{{ fee.student.user.get_full_name }}</td>
+                            <td>{{ fee.semester }}</td>
+                            <td>{{ fee.gradefees }}</td>
+                            <td>{{ fee.amountpaid }}</td>
+                            <td>{{ fee.actualamountpaid }}</td>
+                            <td>{{ fee.balance }}</td>
+                            <td>{{ fee.paystatus }}</td>
+                            <td>{{ fee.paymentdate }}</td>
+                        </tr>
+                        </tbody>
+                    {% empty %}
+                        <tbody>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>
+          <span class="text-center">
+              No Course Available
+              <i>
+              <a class="indigo-text" href="{% url 'add_new_course' %}">
+                  Create Now
+              </a>
+              </i>
+          </span>
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        </tbody>
+                    {% endfor %}
+                </table>
+            </div>
+        {% endif %}
+
+
+    </div>
+    <br>
+{% endblock %}

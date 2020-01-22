@@ -1,0 +1,75 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>A-SMS Students List</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="{% static 'school/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+</head>
+<body>
+
+<div class="container">
+    <h2>
+        {% for school in schooldetails %}
+        <center>
+            <img src="{{ school.photo.url }}" id="icon" class="logo" style="height: 80px">
+            <br>
+            <b>{{ school.schoolname | upper }}</b>
+
+{#            {% if request.user.is_student %}#}
+{#                <br>#}
+{#                {{ request.user.get_full_name | capfirst }}'s Payment History#}
+{#            {% endif %}#}
+
+        </center>
+            <br>
+            <p><small>Payment List Report</small></p>
+            {% empty %}
+                <center>No School Name Found In DB</center>
+        {% endfor %}
+    </h2>
+    <hr>
+    <table class="table table-striped">
+        <thead style="background-color: black">
+        <tr>
+            <th>#</th>
+            <th>Term</th>
+            <th>Student</th>
+            <th>Structure</th>
+            <th>Total</th>
+            <th>Actual</th>
+            <th>Status</th>
+            <th>Date</th>
+            <th>Balance</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for fee in schoolfees reversed %}
+            <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{ fee.semester }}</td>
+                <td>{{ fee.student.user.get_full_name }}</td>
+                <td>{{ fee.gradefees.fee }}</td>
+                <td>{{ fee.amountpaid }}</td>
+                <td>{{ fee.actualamountpaid }}</td>
+                <td>{{ fee.paystatus }}</td>
+                <td>{{ fee.paymentdate }}</td>
+                <td>{{ fee.balance }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+        <tfoot>
+        <tr></tr>
+        <tr>
+            <td>Total:</td>
+            <td>{{ total }}</td>
+        </tr>
+        </tfoot>
+    </table>
+</div>
+
+</body>
+</html>

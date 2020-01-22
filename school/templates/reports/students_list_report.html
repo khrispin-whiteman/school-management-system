@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>A-SMS Students List</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="{% static 'school/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+</head>
+<body>
+
+<div class="container">
+        {% for school in schooldetails %}
+        <center>
+            <img src="{{ school.photo.url }}" id="icon" class="logo" style="height: 80px">
+            <br>
+            <b>{{ school.schoolname | upper }}</b>
+
+{#            {% if request.user.is_student %}#}
+{#                <br>#}
+{#                {{ request.user.get_full_name | capfirst }}'s Payment History#}
+{#            {% endif %}#}
+
+        </center>
+            <br>
+            <p><small>All Students Report</small></p>
+            {% empty %}
+                <center>No School Name Found In DB</center>
+        {% endfor %}
+    <p>All Students List</p>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Firstname</th>
+            <th>Lastname</th>
+            <th>Class</th>
+            <th>Grade</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for student in students %}
+            <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{ student.user.first_name }}</td>
+                <td>{{ student.user.last_name }}</td>
+                <td>{{ student.schoolclass.classname }}</td>
+                <td>{{ student.level.level }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

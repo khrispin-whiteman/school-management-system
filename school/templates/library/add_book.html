@@ -1,0 +1,133 @@
+{% extends 'school/base.html' %}
+{% load crispy_forms_tags %}
+{% block title %} Manage Books | A-SMS {% endblock title %}
+
+{% block side_bar %}
+    {% include 'school/partial_active_element.html' with active='students' %}
+{% endblock side_bar %}
+
+{% block content %}
+    <br>
+
+
+
+    <div class="container-fluid mt-5">
+        <div class="card">
+
+            <h5 class="card-header info-color white-text text-center py-4">
+                <strong>Create Book</strong>
+            </h5>
+
+            <div class="card-body px-lg-5 pt-0">
+
+                <div class="bg bg-white form-group mx-auto my-auto">
+                    <form method="post" class="form" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        <center><input class="btn btn-success" type="submit" value="Submit"/></center>
+                    </form>
+                </div>
+
+                {#                <form method="post" class="md-form" style="color: #757575;">#}
+                {#                    {% csrf_token %}#}
+                {#                    <div class="form-row">#}
+                {#                        <div class="col">#}
+                {#                            <!-- Grdae -->#}
+                {#                            <div class="md-form">#}
+                {#                                {{ form.title }}#}
+                {#                                <label for="materialRegisterFormLastName">{{ form.title.label }}</label>#}
+                {#                            </div>#}
+                {#                        </div>#}
+                {#                        <div class="col">#}
+                {#                            <!-- Class name -->#}
+                {#                            <div class="md-form">#}
+                {#                                {{ form.author }}#}
+                {#                                <label for="materialRegisterFormLastName">{{ form.author.label }}</label>#}
+                {#                            </div>#}
+                {#                        </div>#}
+                {#                    </div>#}
+                {##}
+                {#                    <div class="form-row">#}
+                {#                        <div class="col">#}
+                {#                            <!-- Class teacher name -->#}
+                {#                            <div class="md-form">#}
+                {#                                {{ form.isbn }}#}
+                {#                                <label for="materialRegisterFormLastName">{{ form.isbn.label }}</label>#}
+                {#                            </div>#}
+                {#                        </div>#}
+                {##}
+                {#                        <div class="col">#}
+                {#                            <div class="md-form">#}
+                {#                                {{ form.total_copies }}#}
+                {#                                <label for="materialRegisterFormLastName">{{ form.total_copies.label }}</label>#}
+                {#                            </div>#}
+                {#                        </div>#}
+                {##}
+                {#                    </div>#}
+                {##}
+                {#                    <div class="form-row">#}
+                {#                        <div class="col">#}
+                {#                            <!-- Class teacher name -->#}
+                {#                            <div class="md-form" title="{{ form.summary.help_text }}">#}
+                {#                                {{ form.summary }}<br>#}
+                {#                                <label for="materialRegisterFormLastName">{{ form.summary.label }}</label>#}
+                {#                            </div>#}
+                {#                        </div>#}
+                {##}
+                {#                    </div>#}
+                {##}
+                {##}
+                {#                    <div class="form-row">#}
+                {#                        <div class="col">#}
+                {#                            <div class="md-form">#}
+                {#                                Book Genre<br>#}
+                {#                                {% if form.genre %}#}
+                {#                                    {{ form.genre }}#}
+                {#                                {% else %}#}
+                {#                                    <span class="badge badge-primary badge-pill">#}
+                {#                                            No Genres Available#}
+                {#                                            <a href="#"><i style="color: #ffffff">Create Now</i></a>#}
+                {#                                        </span>#}
+                {#                                    <br><br>#}
+                {#                                {% endif %}#}
+                {#                                <br>#}
+                {#                                <span class="badge badge-primary badge-pill">#}
+                {#                                        All Genre{{ form.courses|length|pluralize }}:{{ form.genre|length }}#}
+                {#                                </span>#}
+                {#                            </div>#}
+                {#                        </div>#}
+                {##}
+                {##}
+                {#                    </div>#}
+                {##}
+                {#                    <div class="form-row">#}
+                {#                        <div class="col">#}
+                {#                            <div class="md-form">#}
+                {#                                Book Language<br>#}
+                {#                                {{ form.language }}#}
+                {#                            </div>#}
+                {#                        </div>#}
+                {##}
+                {#                        <div class="col">#}
+                {#                            <div class="md-form">#}
+                {#                                Upload Book Cover Picture<br>#}
+                {#                                {{ form.pic }}#}
+                {#                            </div>#}
+                {#                        </div>#}
+                {##}
+                {#                    </div>#}
+                {##}
+                {#                    <div class="form-row">#}
+                {##}
+                {#                    </div>#}
+                {##}
+                {##}
+                {#                    <button class="btn btn-outline-info btn-rounded btn-block my-4 waves-effect z-depth-0"#}
+                {#                            type="submit">#}
+                {#                        Save#}
+                {#                    </button>#}
+                {#                </form>#}
+            </div>
+        </div>
+    </div>
+{% endblock %}

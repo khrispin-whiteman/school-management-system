@@ -1,0 +1,131 @@
+{% extends 'school/base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block title %} Student Details | A-SMS {% endblock title %}
+
+{% block side_bar %}
+    {% include 'school/partial_active_element.html' with active='Profile' %}
+{% endblock side_bar %}
+
+{% block content %}
+    <style type="text/css">
+        .table-wrapper-scroll-y {
+            display: block;
+            max-height: 350px;
+            overflow-y: auto;
+            -ms-overflow-style: -ms-autohiding-scrollbar;
+        }
+    </style>
+    <div class="container-fluid mt-5">
+        <!-- Heading -->
+        <div class="card mb-4 wow fadeIn">
+            <!--Card content-->
+            <div class="card-body d-sm-flex justify-content-between">
+                <h6 class="mb-2 mb-sm-0 pt-1">
+                    <a href="{% url 'student_list' %}">All Students</a>
+                    <span>/</span>
+                    <span>{{ student.user.get_full_name }}</span>
+                </h6>
+
+
+            </div>
+        </div>
+        <!-- Heading -->
+
+        <div class="row">
+            <div class="col-md-3">
+
+                <!-- Card -->
+                <div class="card">
+
+                    <!-- Card image -->
+                    <div class="view overlay">
+                        <img class="card-img-top" src="{{ student.user.get_picture }}" alt="User Image">
+                        <a class="mask" href="{% url 'edit_profile' %}">
+                            <div class="mask white-text">Change Picture</div>
+                        </a>
+                    </div>
+
+                    <!-- Card content -->
+                    <div class="card-body card-body-cascade text-center">
+
+                        <small class="card-title">Name: {{ student.user.get_full_name|capfirst }}</small>
+                        <br>
+                        <small class="card-title">Role: Student</small>
+                        <br>
+                        <small class="card-title">Grade: {{ student.level }}</small>
+                        <a href="{% url 'edit_student' student.id %}" class="btn btn-primary">Edit Profile</a>
+                    </div>
+
+
+                </div>
+                <!-- Card -->
+            </div>
+
+
+            <div class="col-md-7 text-center">
+                <p>Registered Courses</p>
+                <div class="table-wrapper-scroll-y">
+
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Course Code</th>
+                            <th scope="col">Course Title</th>
+                            <th scope="col">Course Unit</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for course in takencourse %}
+                            <tr>
+                                <th scope="row">{{ forloop.counter }}</th>
+                                <td>{{ course.course.courseCode }}</td>
+                                <td>{{ course.course.courseTitle }}</td>
+                                <td>{{ course.course.courseUnit }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td>{{ course.courseCode }}</td>
+                                <td></td>
+                                <td>No course is registered this session !</td>
+                                <td></td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="col-md-2 text-center">
+                <small> Registered:<br>
+                    <date>{{ student.user.date_joined|naturaltime }}</date>
+                </small>
+                <hr/>
+                <small> Last Login:<br>
+                    <date>{{ student.user.last_login|naturaltime }}</date>
+                </small>
+                <hr/>
+                <small> Phone:<br>
+                    <date>{% if student.user.phone %}{{ student.user.phone }}{% endif %}</date>
+                </small>
+                <hr/>
+                <small> Email:<br>
+                    <date>{{ student.user.email }}</date>
+                </small>
+                <hr/>
+                <small> Address:<br>
+                    <date>{{ student.user.address }}</date>
+                </small>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function myFunction() {
+            var myWindow = window.open("", "", "width=200,height=100");
+        }
+    </script>
+
+{% endblock %}

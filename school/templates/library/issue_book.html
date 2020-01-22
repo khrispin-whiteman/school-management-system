@@ -1,0 +1,71 @@
+{% extends 'school/base.html' %}
+
+{% block title %} Issue Book | A-SMS {% endblock title %}
+
+{% block side_bar %}
+    {% include 'school/partial_active_element.html' with active='issue_book' %}
+{% endblock side_bar %}
+
+{% block content %}
+<div class="container-fluid mt-5">
+<div class="card">
+
+    <h5 class="card-header info-color white-text text-center py-4">
+        <strong>Issue Book</strong>
+    </h5>
+
+    <div class="card-body px-lg-5 pt-0">
+
+        <form method="post" class="md-form" style="color: #757575;">{% csrf_token %}
+             <div class="form-row">
+                <div class="col">
+                    <!-- First name -->
+                    <div class="md-form">
+                        {{ form.student }}
+                        <label for="materialRegisterFormFirstName">{{ form.courseCode.label }}</label>
+                    </div>
+                </div>
+                <div class="col">
+                    <!-- Last name -->
+                    <div class="md-form">
+                        {{ form.book }}
+                        <label for="materialRegisterFormLastName">{{ form.courseTitle.label }}</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col">
+                    <!-- First name -->
+                    <div class="md-form">
+                        {{ form.num_books_borrowed }}
+                        <label for="materialRegisterFormFirstName">{{ form.num_books_borrowed.label }}</label>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="md-form">
+                        {{ form.return_date }}
+                        <label for="materialRegisterFormLastName">{{ form.return_date.label }}</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col">
+
+                    <div>
+                        <label for="materialRegisterFormFirstName"> {{ form.returned.label }}</label><br>
+                    </div>
+                    <div class="md-form">
+                        {{ form.returned }}
+                    </div>
+                </div>
+
+
+            </div>
+           	<button class="btn btn-outline-info btn-rounded btn-block my-4 waves-effect z-depth-0" type="submit">
+            	Save
+            </button>
+        </form>
+    </div>
+</div>
+</div>
+{% endblock %}

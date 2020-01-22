@@ -1,0 +1,213 @@
+{% extends 'school/base.html' %}
+
+{% block title %} Results | ARMS {% endblock title %}
+
+{% block side_bar %}
+    {% include 'school/partial_active_element.html' with active='view_results' %}
+{% endblock side_bar %}
+
+{% block content %}
+    <div class="container-fluid mt-5">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-success alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+        <style type="text/css">
+            .table-wrapper-scroll-y {
+                display: block;
+                max-height: 350px;
+                overflow-y: auto;
+                -ms-overflow-style: -ms-autohiding-scrollbar;
+            }
+        </style>
+        {#        <center>{{ student.level }}L Result</center>#}
+        {#        <div class="table-wrapper-scroll-y">#}
+        {#            <table class="table table-bordered table-striped">#}
+        {#                <thead>#}
+        {#                <tr>#}
+        {#                    <th scope="col">#</th>#}
+        {#                    <th scope="col">Course Title</th>#}
+        {#                    <th scope="col">Course Code</th>#}
+        {#                    <th scope="col">GRADE</th>#}
+        {#                </tr>#}
+        {#                </thead>#}
+        {#                <u>First Semester:</u>#}
+        {#                {% for course in courses %}#}
+        {#                    {% if course.course.semester == "First" %}#}
+        {#                        <tbody>#}
+        {#                        <tr>#}
+        {#                            <th scope="row">{{ forloop.counter }}</th>#}
+        {#                            <td>{{ course.course.courseTitle }}</td>#}
+        {#                            <td>{{ course.course.courseCode }}</td>#}
+        {#                            <td>{{ course.grade }}</td>#}
+        {#                        </tr>#}
+        {#                        </tbody>#}
+        {#                    {% endif %}#}
+        {#                {% endfor %}#}
+        {#                <br>#}
+        {#            </table>#}
+        {#            <table class="table table-bordered table-striped">#}
+        {#                <thead>#}
+        {#                <tr>#}
+        {#                    <th scope="col">#</th>#}
+        {#                    <th scope="col">Course Title</th>#}
+        {#                    <th scope="col">Course Code</th>#}
+        {#                    <th scope="col">GRADE</th>#}
+        {#                </tr>#}
+        {#                </thead>#}
+        {#                <u>Seccond Semester:</u>#}
+        {#                {% for course in courses %}#}
+        {#                    {% if course.course.semester == "Second" %}#}
+        {#                        <tbody>#}
+        {#                        <tr>#}
+        {#                            <th scope="row">{{ forloop.counter }}</th>#}
+        {#                            <td>{{ course.course.courseTitle }}</td>#}
+        {#                            <td>{{ course.course.courseCode }}</td>#}
+        {#                            <td>{{ course.grade }}</td>#}
+        {#                        </tr>#}
+        {#                        </tbody>#}
+        {#                    {% endif %}#}
+        {#                {% endfor %}#}
+        {#            </table>#}
+        {#            <table class="table table-bordered table-striped">#}
+        {#                <thead>#}
+        {#                <tr>#}
+        {#                    <th scope="col">#</th>#}
+        {#                    <th scope="col">Course Title</th>#}
+        {#                    <th scope="col">Course Code</th>#}
+        {#                    <th scope="col">GRADE</th>#}
+        {#                </tr>#}
+        {#                </thead>#}
+        {#                <u>Seccond Semester:</u>#}
+        {#                {% for course in courses %}#}
+        {#                    {% if course.course.semester == "Third" %}#}
+        {#                        <tbody>#}
+        {#                        <tr>#}
+        {#                            <th scope="row">{{ forloop.counter }}</th>#}
+        {#                            <td>{{ course.course.courseTitle }}</td>#}
+        {#                            <td>{{ course.course.courseCode }}</td>#}
+        {#                            <td>{{ course.grade }}</td>#}
+        {#                        </tr>#}
+        {#                        </tbody>#}
+        {#                    {% endif %}#}
+        {#                {% endfor %}#}
+        {#            </table>#}
+        {#        </div>#}
+        {#        <br>#}
+        {#        <tbody>#}
+        {#        {% for result in result %}#}
+        {#            {% if result.semester == "First" %}#}
+        {#                <tr>#}
+        {#                    <th scope="row"></th>#}
+        {#                    <th></th>#}
+        {#                    <th><label>First Semester GPA:</label> {{ result.gpa }}</th>#}
+        {#                </tr>#}
+        {#                <br>#}
+        {#            {% elif result.semester == "Second" %}#}
+        {#                <tr>#}
+        {#                    <th scope="row"></th>#}
+        {#                    <th></th>#}
+        {#                    <th><label>Second Semester GPA:</label> {{ result.gpa }}</th>#}
+        {#                </tr>#}
+        {#                <br>#}
+        {#            {% elif result.semester == "Third" %}#}
+        {#                <tr>#}
+        {#                    <th scope="row"></th>#}
+        {#                    <th></th>#}
+        {#                    <th><label>Third Semester GPA:</label> {{ result.gpa }}</th>#}
+        {#                </tr>#}
+        {#                <br>#}
+        {#            {% endif %}#}
+        {#        {% endfor %}#}
+        {#        <tr>#}
+        {#            <th scope="row"></th>#}
+        {#            <th></th>#}
+        {#            <th><label>Previous CGPA:</label> {{ previousCGPA }}</th>#}
+        {#        </tr>#}
+        {#        </tbody>#}
+    </div>
+    <br>
+
+    {% if request.user.is_parent %}
+        <div class="list-group">
+            {% for stud in students %}
+                <div class="list-group-item">
+                    <a href="{% url 'view_result_by_parent' stud.id %}">
+                        {{ stud.user.get_full_name }}, Grade: {{ stud.level }}
+                    </a>
+                </div>
+            {% empty %}
+                No Students Assigned!
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% if request.user.is_student %}
+        <div class="col-md-8 col-lg-10" id="students_dv_form">
+            <b>END OF TERM RESULTS</b><br>
+            <hr>
+            {% regroup courses by semester as results_list %}
+
+            <ul>
+                {% for ex in results_list reversed %}
+
+                    <div class="row">
+                        <div class="table_view col-xs-12 "
+                             style="background-color: darkgrey; border: 1px solid rgba(42,24,26,0.56); border-radius: 4px; padding: 10px;">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" style="grid-template-columns: 1fr 1fr 1fr;">
+                                    <br>
+                                    <div class="inline-group">
+                                        <a href="#" class="btn btn-sm btn-default">
+                                            <i class="glyphicon glyphicon-print"></i>
+                                            Print Results {{ ex.grouper }}
+                                        </a>
+                                        <br><br>
+                                    </div>
+
+                                    <center><strong>{{ ex.grouper }}</strong></center>
+                                    <thead>
+                                    <tr>
+                                        <th><strong>#</strong></th>
+                                        <th><strong>SUBJECT</strong></th>
+                                        <th><strong>CODE</strong></th>
+                                        <th><strong>CA</strong></th>
+                                        <th><strong>EXAM</strong></th>
+                                        <th><strong>TOTAL</strong></th>
+                                        <th><strong>GRADE</strong></th>
+                                    </tr>
+                                    </thead>
+
+                                    {% if results_list %}
+                                        <tbody>
+                                        {% for r in ex.list %}
+                                            <tr>
+                                                <th scope="row">{{ forloop.counter }}</th>
+                                                <td><b>{{ r.course.courseTitle }}</b></td>
+                                                <td><b>{{ r.course.courseCode }}</b></td>
+                                                <td><b>{{ r.ca }}</b></td>
+                                                <td><b>{{ r.exam }}</b></td>
+                                                <td><b>{{ r.total }}</b></td>
+                                                <td><b>{{ r.grade }}</b></td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    {% else %}
+                                        <p class="alert-danger">Results Not Found!</p>
+                                    {% endif %}
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <br><br>
+                {% endfor %}
+            </ul>
+
+        </div>
+    {% endif %}
+
+{% endblock %}
