@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
 from django.db import transaction
 from .models import *
@@ -149,6 +150,57 @@ class ParentAddForm(UserCreationForm):
         if commit:
             user.save()
         return user
+
+
+class ParentChildrenAddForm(forms.ModelForm):
+    user = forms.ModelChoiceField(
+        queryset=User.objects.filter(),
+        widget=forms.Select(attrs={'class': 'browser-default custom-select'}),
+        empty_label='Choose Parent',
+    )
+    student = forms.ModelChoiceField(
+        queryset=Student.objects.filter().order_by('level'),
+        widget=forms.Select(attrs={'class': 'browser-default custom-select'}),
+        empty_label='Choose Student',
+    )
+
+    occupation = forms.CharField(
+        max_length=200,
+        widget=forms.TextInput(
+            attrs={
+                'type': 'text',
+                'class': 'form-control',
+            }
+        ),
+        label="Occupation",
+    )
+    nationality = forms.CharField(
+        max_length=200,
+        widget=forms.TextInput(
+            attrs={
+                'type': 'text',
+                'class': 'form-control',
+            }
+        ),
+        label="Nationality",
+    )
+
+    class Meta:
+        model = Parent
+        fields = ['student', 'occupation', 'nationality', 'user']
+
+    # @transaction.atomic()
+    # def save(self, commit=True,):
+    #     parent = super().save(commit=False)
+    #     print('FIRST PRINT USER ID: ', self.cleaned_data.get('parent'))
+    #     #paruser = User.objects.get(id=self.cleaned_data.get('parent'))
+    #     print('SECOND PRINT USER ID: ', self.cleaned_data.get('parent'))
+    #
+    #     parent.user = self.cleaned_data.get('parent')
+    #
+    #     if commit:
+    #         parent.save()
+    #     return parent
 
 
 class StudentAddForm(UserCreationForm):
@@ -451,13 +503,13 @@ class CourseAddForm(forms.ModelForm):
     level = forms.ModelChoiceField(
         queryset=Level.objects.all(),
         widget=forms.Select(attrs={'class': 'browser-default custom-select'}),
-        empty_label='Choose Level',
+        empty_label='Choose Grade',
     )
 
     semester = forms.ModelChoiceField(
         queryset=Semester.objects.all(),
         widget=forms.Select(attrs={'class': 'browser-default custom-select'}),
-        empty_label='Choose Semester',
+        empty_label='Choose Term',
     )
 
     is_elective = forms.BooleanField(label="*is_elective", required=False)

@@ -59,7 +59,7 @@
                 <div class="list-group">
                     {% for stud in students %}
                         <div class="list-group-item">
-                            <a href="{% url 'parent_payment_history_view' stud.id %}">
+                            <a href="{% url 'parent_attendance_view' stud.user.id %}">
                                 {{ stud.user.get_full_name }}, Grade: {{ stud.level }}
                             </a>
                         </div>

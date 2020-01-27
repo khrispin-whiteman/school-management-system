@@ -2,10 +2,10 @@
 {% load static %}
 {% load humanize %}
 
-{% block title %} Student Details | A-SMS {% endblock title %}
+{% block title %} Parent Details | A-SMS {% endblock title %}
 
 {% block side_bar %}
-    {% include 'school/partial_active_element.html' with active='Profile' %}
+    {% include 'school/partial_active_element.html' with active='manage_parent' %}
 {% endblock side_bar %}
 
 {% block content %}
@@ -23,9 +23,13 @@
             <!--Card content-->
             <div class="card-body d-sm-flex justify-content-between">
                 <h6 class="mb-2 mb-sm-0 pt-1">
-                    <a href="{% url 'student_list' %}">All Students</a>
+                    <a href="{% url 'parent_list' %}">All Parents</a>
                     <span>/</span>
-                    <span>{{ student.user.get_full_name }}</span>
+                    <span>{{ parent.get_full_name }}</span>
+                </h6>
+
+                <h6 class="mb-2 mb-sm-0 pt-1">
+                    <a class="btn btn-primary btn-sm" href="{% url 'add_new_parents_child' parent.id %}">Assign Child/Children</a>
                 </h6>
 
 
@@ -41,7 +45,7 @@
 
                     <!-- Card image -->
                     <div class="view overlay">
-                        <img class="card-img-top" src="{{ student.user.get_picture }}" alt="User Image">
+                        <img class="card-img-top" src="{{ parent.get_picture }}" alt="User Image">
                         <a class="mask" href="{% url 'edit_profile' %}">
                             <div class="mask white-text">Change Picture</div>
                         </a>
@@ -50,14 +54,11 @@
                     <!-- Card content -->
                     <div class="card-body card-body-cascade text-center">
 
-                        <small class="card-title">Name: {{ student.user.get_full_name|capfirst }}</small>
+                        <small class="card-title">Name: {{ parent.get_full_name|capfirst }}</small>
                         <br>
-                        <small class="card-title">Role: Student</small>
+                        <small class="card-title">Role: Parent</small>
                         <br>
-                        <small class="card-title">Grade: {{ student.level }}{{ student.schoolclass.classname }}</small>
-                        <br>
-                        <small class="card-title">Teacher: <a href="#">{{ student.schoolclass.classteacher | capfirst }}</a></small>
-                        <a href="{% url 'edit_student' student.id %}" class="btn btn-primary">Edit Profile</a>
+                        <a href="#" class="btn btn-primary">Edit Profile</a>
                     </div>
 
 
@@ -67,31 +68,31 @@
 
 
             <div class="col-md-7 text-center">
-                <p>Registered Courses</p>
+                <p>Children</p>
                 <div class="table-wrapper-scroll-y">
 
                     <table class="table table-bordered table-striped">
                         <thead>
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">Course Code</th>
-                            <th scope="col">Course Title</th>
-                            <th scope="col">Course Unit</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Grade</th>
+                            <th scope="col">Class Teacher</th>
                         </tr>
                         </thead>
                         <tbody>
-                        {% for course in takencourse %}
+                        {% for student in students %}
                             <tr>
                                 <th scope="row">{{ forloop.counter }}</th>
-                                <td>{{ course.course.courseCode }}</td>
-                                <td>{{ course.course.courseTitle }}</td>
-                                <td>{{ course.course.courseUnit }}</td>
+                                <td>{{ student.user.get_full_name }}</td>
+                                <td>{{ student.level }}</td>
+                                <td>{{ student.schoolclass.classteacher }}</td>
                             </tr>
                             {% empty %}
                             <tr>
                                 <td>{{ course.courseCode }}</td>
                                 <td></td>
-                                <td>No course is registered this session !</td>
+                                <td>No student is assigned!</td>
                                 <td></td>
                             </tr>
                         {% endfor %}
@@ -102,23 +103,23 @@
 
             <div class="col-md-2 text-center">
                 <small> Registered:<br>
-                    <date>{{ student.user.date_joined|naturaltime }}</date>
+                    <date>{{ parent.date_joined|naturaltime }}</date>
                 </small>
                 <hr/>
                 <small> Last Login:<br>
-                    <date>{{ student.user.last_login|naturaltime }}</date>
+                    <date>{{ parent.last_login|naturaltime }}</date>
                 </small>
                 <hr/>
                 <small> Phone:<br>
-                    <date>{% if student.user.phone %}{{ student.user.phone }}{% endif %}</date>
+                    <date>{% if parent.phone %}{{ student.user.phone }}{% endif %}</date>
                 </small>
                 <hr/>
                 <small> Email:<br>
-                    <date>{{ student.user.email }}</date>
+                    <date>{{ parent.email }}</date>
                 </small>
                 <hr/>
                 <small> Address:<br>
-                    <date>{{ student.user.address }}</date>
+                    <date>{{ parent.address }}</date>
                 </small>
             </div>
         </div>

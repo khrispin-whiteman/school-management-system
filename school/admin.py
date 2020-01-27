@@ -35,7 +35,7 @@ class TimeTableAdmin(ImportExportModelAdmin):
     search_fields = ('course__courseTitle', 'day', 'start_time', 'end_time', 'venue', 'description')
 
 class TheUserAdmin(UserAdmin):
-    list_display = ('first_name', 'last_name', 'phone', 'address', 'email', 'is_student', 'is_lecturer', 'is_librarian', 'is_parent', 'password_type', 'days_for_password_expiry', 'last_password_reset_date', 'password_expiry_date', 'is_password_expired')
+    list_display = ('id', 'first_name', 'last_name', 'phone', 'address', 'email', 'is_student', 'is_lecturer', 'is_librarian', 'is_parent', 'password_type', 'days_for_password_expiry', 'last_password_reset_date', 'password_expiry_date', 'is_password_expired')
     list_display_links = ('first_name', 'last_name', 'phone', 'address', 'email', 'is_student', 'is_lecturer', 'is_librarian', 'is_parent', 'password_type', 'days_for_password_expiry', 'last_password_reset_date', 'password_expiry_date', 'is_password_expired')
     list_per_page = 10
     search_fields = ('first_name', 'last_name', 'phone', 'address', 'email', 'is_student', 'is_lecturer', 'is_librarian', 'is_parent', 'password_type')
@@ -90,7 +90,7 @@ class PasswordConfigurationsAdmin(ImportExportModelAdmin):
 
 
 class ParentsAdmin(ImportExportModelAdmin):
-    list_display = ('user', 'get_students')
+    list_display = ('user', 'student')
     list_display_links = ()
     list_per_page = 10
     search_fields = ()

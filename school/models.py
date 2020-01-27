@@ -221,21 +221,21 @@ class Student(models.Model):
 
 class Parent(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    student = models.ManyToManyField(Student, )
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
     occupation = models.CharField('Occupation', max_length=200, null=True, blank=True)
     nationality = models.CharField('Nationality', max_length=200, null=True, blank=True)
 
-    def get_students(self):
-        return ",".join([s.user.get_full_name() for s in self.student.all()])
+    # def get_students(self):
+    #     return ",".join([s.user.get_full_name() for s in self.student.all()])
 
     def __str__(self):
         return self.user.username
 
-    def save(self, **kwargs):
-        if not self.id:
-            user = User.objects.get(id=self.user.id)
-            user.is_parent = True
-            user.save()
+    # def save(self, **kwargs):
+    #     if not self.id:
+    #         user = User.objects.get(id=self.user.id)
+    #         user.is_parent = True
+    #         user.save()
 
 
 
@@ -468,6 +468,9 @@ class SchoolDetails(models.Model):
     address = models.CharField('School Address', max_length=200, null=True, blank=True, default='School Address')
     email = models.CharField('Email Address', max_length=200, null=True, blank=True,
                              default='exampleemail@exampleemail.com')
+    facebook = models.CharField('Facebook Page Link', max_length=1000, blank=True, null=True)
+    twitter = models.CharField('Twitter', max_length=1000, blank=True, null=True)
+    instagram = models.CharField('Instagram', max_length=1000, blank=True, null=True)
     phone = models.CharField('Tel/Cell', max_length=200, null=True, blank=True, default='Tel/Cell Number')
     photo = models.ImageField('School logo', upload_to='school/logo/%Y/%m/%d', default='', null=True, blank=True)
 

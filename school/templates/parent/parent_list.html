@@ -3,7 +3,7 @@
 {% block title %} Parent lists | ARMS {% endblock title %}
 
 {% block side_bar %}
-    {% include 'school/partial_active_element.html' with active='staff' %}
+    {% include 'school/partial_active_element.html' with active='manage_parent' %}
 {% endblock %}
 {% block content %}
 <style type="text/css">
@@ -33,7 +33,7 @@ overflow-y: auto;
             {% if request.user.is_superuser %}
             <!-- Heading -->
             <h6 class="mb-2 mb-sm-0 pt-1">
-            <a href="#" class="btn btn-default btn-rounded mb-4">
+            <a href="{% url 'add_new_parent' %}" class="btn btn-default btn-rounded mb-4">
                Add New {{ user_type }}
             </a>
             <a class="pull-right btn btn-default btn-rounded mb-3" href="{% url 'staff_list_report' %}" class="btn btn-default btn-rounded mb-4">
@@ -61,26 +61,23 @@ overflow-y: auto;
                           {% endif %}
                         </tr>
                     </thead>
-                {% for staff in parents reversed %}
+                {% for parent in parents reversed %}
                     <tbody>
                         <tr>
                           <th scope="row">{{ forloop.counter }}</th>
-                          <td>{% if staff.user.username %} {{ staff.username }} {% else %} N/A  {% endif %}</td>
-                          <td>{% if staff.first_name %} {{ staff.first_name }} {% else %} N/A  {% endif %}</td>
-                          <td>{% if staff.last_name %} {{ staff.last_name }} {% else %} N/A {% endif %}</td>
-                          <td>{% if staff.phone %} {{ staff.phone }} {% else %}
+                          <td>{% if parent.user.username %} {{ parent.username }} {% else %} N/A  {% endif %}</td>
+                          <td>{% if parent.first_name %} {{ parent.first_name }} {% else %} N/A  {% endif %}</td>
+                          <td>{% if parent.last_name %} {{ parent.last_name }} {% else %} N/A {% endif %}</td>
+                          <td>{% if parent.phone %} {{ parent.phone }} {% else %}
                           <span class="red-text">N/A</span>{% endif %}</td>
-                          <td>{% if staff.address %} {{ staff.address }} {% else %} N/A {% endif %}</td>
-                          <td>{% if staff.is_superuser %} Superuser {% else %} Teacher {% endif %}</td>
-                          <td><img class="img img-rounded" width="30" src="{{ staff.get_picture }}" alt="{{ staff.username }}'s image"></td>
+                          <td>{% if parent.address %} {{ parent.address }} {% else %} N/A {% endif %}</td>
+                          <td>{% if parent.is_superuser %} Superuser/Parent {% else %} Parent {% endif %}</td>
+                          <td><img class="img img-rounded" width="30" src="{{ parent.get_picture }}" alt="{{ parent.username }}'s image"></td>
                           {% if request.user.is_superuser %}
                           <td>
-                            <a data-toggle="tooltip" title="view" class="blue-text"><i class="fa fa-user"></i></a>
-                            <a data-toggle="tooltip" href="{% url 'edit_staff' pk=staff.pk %}" title="edit" class="teal-text"><i class="fa fa-pencil"></i></a>
-                            <a data-toggle="tooltip" href="{% url 'delete_staff' pk=staff.pk %}" title="delete" class="red-text"><i class="fa fa-times"></i></a>
-                            <a data-toggle="tooltip" href="{% url 'make_staff_admin' staff.pk %}" title="make admin" class="green-text"><i class="fa fa-superpowers"></i></a>
-                            <a data-toggle="tooltip" href="{% url 'remove_staff_admin' staff.pk %}" title="remove admin" class="red-text"><i class="fa fa-superpowers"></i></a>
-
+                            <a data-toggle="tooltip" href="{% url 'parent_details' parent.id %}" title="view" class="blue-text"><i class="fa fa-user"></i></a>
+                            <a data-toggle="tooltip" href="#" title="edit" class="teal-text"><i class="fa fa-pencil"></i></a>
+                            <a data-toggle="tooltip" href="#" title="delete" class="red-text"><i class="fa fa-times"></i></a>
                           </td>
                           {% endif %}
                         </tr>

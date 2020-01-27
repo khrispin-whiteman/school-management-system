@@ -15,13 +15,22 @@ from library.models import Book
 from school.decorators import lecturer_required, student_required
 from school.forms import StudentCourseRegistrationForm, CourseAllocationForm, CourseAddForm, StudentAddForm, \
     StaffAddForm, SemesterForm, SessionForm, SchoolClassAddForm, FeesCollectionForm, ProfileForm, SchoolClassEditForm, \
-    StudentAttendanceForm
+    StudentAttendanceForm, ParentAddForm, ParentChildrenAddForm, SchoolDetails
 from school.models import CourseAllocation, Result, Student, TakenCourse, Semester, Course, Session, SchoolClass, User, \
     SchoolFees, Level, Parent, Timetable, PupilAttendance
 
 
 def index(request):
-    return render(request, 'frontend/index.html', {})
+    schooldetails = SchoolDetails.objects.all()
+    return render(request, 'frontend/index.html',
+                  {
+                      'schooldetails': schooldetails,
+                  })
+
+
+def schoolpackages(request):
+    return render(request, 'frontend/packages.html', {})
+
 
 @login_required
 def home(request):
@@ -273,7 +282,7 @@ def user_profile(request, id):
 @login_required
 def pay_history(request):
     if request.user.is_parent:
-        parent = Parent.objects.get(user=request.user)
+        parent = User.objects.get(id=request.user.id)
         students = parent.student.all()
 
 
@@ -497,7 +506,7 @@ def student_attendance_mark(request, pk):
                 date = datetime.today()
                 mark = form.cleaned_data['mark_attendance']
                 print(mark)
-                check_attendance = PupilAttendance.objects.filter(nameofclass=schoolClass, daysdate=date, student=student)
+                check_attendance = PupilAttendance.objects.filter(nameofclass=school_class, daysdate=date, student=student)
                 print(check_attendance)
 
                 # if check_attendance:
@@ -510,7 +519,7 @@ def student_attendance_mark(request, pk):
                 #     attendance.save()
 
                 if check_attendance:
-                    attendance = PupilAttendance.objects.get(nameofclass=schoolClass, daysdate=date, student=student)
+                    attendance = PupilAttendance.objects.get(nameofclass=school_class, daysdate=date, student=student)
                     if attendance.mark_attendance == 'Absent':
                         if mark == 'Absent':
                             attendance.mark_attendance = mark
@@ -774,6 +783,74 @@ class StaffAddView(CreateView):
         return redirect('staff_list')
 
 
+@method_decorator([login_required, lecturer_required], name='dispatch')
+class ParentAddView(CreateView):
+    model = User
+    form_class = ParentAddForm
+    template_name = 'parent/add_parent.html'
+
+    def get_context_data(self, **kwargs):
+        kwargs['user_type'] = 'parent'
+        return super().get_context_data(**kwargs)
+
+    def form_valid(self, form):
+        user = form.save()
+        return redirect('add_new_parents_child', pk=user.id)
+
+@method_decorator([login_required, lecturer_required], name='dispatch')
+class ParentChildrenAddView(CreateView):
+    model = User
+    form_class = ParentChildrenAddForm
+    template_name = 'parent/add_parents_children.html'
+
+    def get_context_data(self, **kwargs):
+        kwargs['user_type'] = 'parent'
+        kwargs['pk'] = self.kwargs['pk']
+        kwargs['parent'] = User.objects.get(id=self.kwargs['pk'])
+        return super().get_context_data(**kwargs)
+
+    def form_valid(self, form):
+        user = form.save()
+        return redirect('parent_list')
+
+
+@login_required
+def parent_details(request, pk):
+    parent = User.objects.get(is_parent=True, id=pk)
+
+    students = Student.objects.filter(parent__user_id=pk)
+    return render(request, 'parent/parent_detail.html',
+                      {
+
+                          'parent': parent,
+                          'students': students,
+
+                      })
+
+    # try:
+    #     students = parent.student()
+    #     return render(request, 'parent/parent_detail.html',
+    #                   {
+    #
+    #                       'parent': parent,
+    #                       'students': students,
+    #
+    #                   })
+    # except User.student.RelatedObjectDoesNotExist:
+    #     return render(request, 'parent/parent_detail.html',
+    #                   {
+    #
+    #                       'parent': parent,
+    #                       # 'students': students,
+    #
+    #                   })
+
+
+
+    #takencourse = TakenCourse.objects.filter(student__id=pk, semester__is_current_semester=True)
+
+
+
 @login_required
 @lecturer_required
 def edit_staff(request, pk):
@@ -828,7 +905,7 @@ class StudentAddView(CreateView):
 
     def form_valid(self, form):
         user = form.save()
-        return redirect('student_course_registation')
+        return redirect('student_list')
 
 
 @login_required
@@ -970,6 +1047,7 @@ class StudentCourseRegistation(CreateView):
 def view_student_details(request, pk):
     student = Student.objects.get(id=pk)
     takencourse = TakenCourse.objects.filter(student__id=pk, semester__is_current_semester=True)
+
     return render(request, 'students/view_student_details.html',
                   {
 
@@ -1138,77 +1216,88 @@ def student_attendance(request):
 
 
 @login_required
-def mark_attendance(request,pk):
-    teacher = get_object_or_404(Teacher, pk=pk)
-    students = Student.objects.filter(student_teacher=teacher)
-    count = students.count()
-    attendance_formset = formset_factory(AttendanceForm, extra=count)
-    date = datetime.today().date().strftime('%d-%m-%Y')
+def parent_attendance_view(request, pk):
+    studentattendance = PupilAttendance.objects.filter(student__user__id=pk)
+    student = Student.objects.get(user__id=pk)
+    context = {
+        'student': student,
+        'studentattendance': studentattendance,
+    }
 
-    if request.method == 'POST':
-        formset = attendance_formset(request.POST)
-        list = zip(students, formset)
+    return render(request, 'parent/parent_attendance_view.html', context)
 
-        if formset.is_valid():
-            for form, student in zip(formset, students):
-                date = datetime.today()
-                mark = form.cleaned_data['mark_attendance']
-                print(mark)
-                check_attendance = Attendance.objects.filter(teacher=teacher, date=date, student=student)
-                print(check_attendance)
-
-                if check_attendance:
-                    attendance = Attendance.objects.get(teacher=teacher, date=date, student=student)
-                    if attendance.mark_attendance == 'Absent':
-                        student.absent = student.absent - 1
-                    elif attendance.mark_attendance == 'Present':
-                        student.present = student.present - 1
-                    attendance.mark_attendance = mark
-                    attendance.save()
-
-                else:
-                    attendance = Attendance()
-                    attendance.teacher = teacher
-                    attendance.student = student
-                    attendance.date = date
-                    attendance.mark_attendance = mark
-                    attendance.save()
-
-                if mark == 'Absent':
-                    student.absent = student.absent + 1
-                if mark == 'Present':
-                    student.present = student.present + 1
-                student.save()
-
-            context = {
-                'students': students,
-                'teacher': teacher,
-            }
-            # return render(request, 'attendance/profile.html', context)
-            return redirect('attendance:profile', pk=teacher.pk)
-        else:
-            error = "Something went wrong"
-            context = {
-                'error': error,
-                'formset': formset,
-                'students': students,
-                'teacher': teacher,
-                'list': list,
-                'date': date,
-            }
-            return render(request, 'attendance/attendance_form.html', context)
-
-    else:
-        list = zip(students, attendance_formset())
-        context = {
-            'formset': attendance_formset(),
-            'students': students,
-            'teacher': teacher,
-            'list': list,
-            'date': date,
-        }
-
-        return render(request, 'attendance/attendance_form.html', context)
+# @login_required
+# def mark_attendance(request,pk):
+#     teacher = get_object_or_404(Teacher, pk=pk)
+#     students = Student.objects.filter(student_teacher=teacher)
+#     count = students.count()
+#     attendance_formset = formset_factory(AttendanceForm, extra=count)
+#     date = datetime.today().date().strftime('%d-%m-%Y')
+#
+#     if request.method == 'POST':
+#         formset = attendance_formset(request.POST)
+#         list = zip(students, formset)
+#
+#         if formset.is_valid():
+#             for form, student in zip(formset, students):
+#                 date = datetime.today()
+#                 mark = form.cleaned_data['mark_attendance']
+#                 print(mark)
+#                 check_attendance = Attendance.objects.filter(teacher=teacher, date=date, student=student)
+#                 print(check_attendance)
+#
+#                 if check_attendance:
+#                     attendance = Attendance.objects.get(teacher=teacher, date=date, student=student)
+#                     if attendance.mark_attendance == 'Absent':
+#                         student.absent = student.absent - 1
+#                     elif attendance.mark_attendance == 'Present':
+#                         student.present = student.present - 1
+#                     attendance.mark_attendance = mark
+#                     attendance.save()
+#
+#                 else:
+#                     attendance = Attendance()
+#                     attendance.teacher = teacher
+#                     attendance.student = student
+#                     attendance.date = date
+#                     attendance.mark_attendance = mark
+#                     attendance.save()
+#
+#                 if mark == 'Absent':
+#                     student.absent = student.absent + 1
+#                 if mark == 'Present':
+#                     student.present = student.present + 1
+#                 student.save()
+#
+#             context = {
+#                 'students': students,
+#                 'teacher': teacher,
+#             }
+#             # return render(request, 'attendance/profile.html', context)
+#             return redirect('attendance:profile', pk=teacher.pk)
+#         else:
+#             error = "Something went wrong"
+#             context = {
+#                 'error': error,
+#                 'formset': formset,
+#                 'students': students,
+#                 'teacher': teacher,
+#                 'list': list,
+#                 'date': date,
+#             }
+#             return render(request, 'attendance/attendance_form.html', context)
+#
+#     else:
+#         list = zip(students, attendance_formset())
+#         context = {
+#             'formset': attendance_formset(),
+#             'students': students,
+#             'teacher': teacher,
+#             'list': list,
+#             'date': date,
+#         }
+#
+#         return render(request, 'attendance/attendance_form.html', context)
 
 
 @login_required
