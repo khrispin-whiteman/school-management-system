@@ -72,6 +72,10 @@ urlpatterns = [
 
     path('managefees/', views.student_fees, name='student_fees'),
     path('managefees/collectfees/', views.FeesCollectionView.as_view(), name='collect_fees'),
+    path('managefees/feesstructures/', views.fees_structure, name='fees_structure_list'),
+    path('managefees/feesstructures/add/', views.FeesStructureAddView.as_view(), name='add_fees_structure'),
+    path('managefees/feesstructures/edit/<int:pk>/', views.edit_fee_structure, name='edit_fee_structure'),
+    path('managefees/feesstructures/delete/<int:pk>/', views.fee_structure_delete_view, name='fee_structure_delete'),
 
     path('manageclasses/', views.manage_classes, name='manage_classes'),
     path('manageclasses/<int:pk>/', views.view_class, name='view_class'),

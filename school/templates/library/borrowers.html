@@ -56,18 +56,21 @@
                     <th scope="col">Borrow Date</th>
                     <th scope="col">Return Date</th>
                     <th scope="col">Returned</th>
-{#                    {% if request.user.is_superuser %}#}
-{#                        <th scope="col">Action</th>#}
-{#                    {% endif %}#}
+                    <th scope="col">View</th>
+                    {% if request.user.is_librarian %}
+                        <th scope="col" style="color: green">Return Book</th>
+                    {% endif %}
                 </tr>
                 </thead>
                 {% for borrower in borrowers_list reversed %}
                     <tbody>
                     <tr>
                         <th scope="row">{{ forloop.counter }}</th>
-                        <td>{% if borrower.student.user.get_full_name %} {{ borrower.student.user.get_full_name }} {% else %} N/A  {% endif %}</td>
+                        <td>{% if borrower.student.user.get_full_name %}
+                            {{ borrower.student.user.get_full_name }} {% else %} N/A  {% endif %}</td>
                         <td>{% if borrower.book %} {{ borrower.book.title }} {% else %} N/A  {% endif %}</td>
-                        <td>{% if borrower.num_books_borrowed %} {{ borrower.num_books_borrowed }} {% else %} N/A {% endif %}</td>
+                        <td>{% if borrower.num_books_borrowed %} {{ borrower.num_books_borrowed }} {% else %}
+                            N/A {% endif %}</td>
                         <td>{% if borrower.issue_date %} {{ borrower.issue_date }} {% else %}
                             <span class="red-text">N/A</span>{% endif %}</td>
                         <td>
@@ -81,20 +84,19 @@
                             {{ borrower.returned }}
                         </td>
 
-{#                        {% if request.user.is_superuser %}#}
-{#                            <td>#}
-{#                                <a data-toggle="tooltip" title="view" class="blue-text"><i class="fa fa-user"></i></a>#}
-{#                                <a data-toggle="tooltip" href="{% url 'edit_staff' pk=librarian.pk %}" title="edit"#}
-{#                                   class="teal-text"><i class="fa fa-pencil"></i></a>#}
-{#                                <a data-toggle="tooltip" href="{% url 'delete_staff' pk=librarian.pk %}" title="delete"#}
-{#                                   class="red-text"><i class="fa fa-times"></i></a>#}
-{#                                <a data-toggle="tooltip" href="{% url 'make_staff_admin' librarian.pk %}" title="make admin"#}
-{#                                   class="green-text"><i class="fa fa-superpowers"></i></a>#}
-{#                                <a data-toggle="tooltip" href="{% url 'remove_staff_admin' librarian.pk %}"#}
-{#                                   title="remove admin" class="red-text"><i class="fa fa-superpowers"></i></a>#}
-{##}
-{#                            </td>#}
-{#                        {% endif %}#}
+                        {% if request.user.is_librarian %}
+                            <td>
+                                <a data-toggle="tooltip" title="view" class="blue-text">
+                                    <i class="fa fa-book"></i>
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" href="" title="edit"
+                                   class="teal-text">
+                                    <i class="fa fa-pencil"></i>
+                                </a>
+                            </td>
+                        {% endif %}
                     </tr>
                     </tbody>
                 {% empty %}

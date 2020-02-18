@@ -53,7 +53,7 @@ overflow-y: auto;
         <p><strong>Genre:</strong>
             {% for genre in book.genre.all %}{{ genre }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
         <div style="margin-left:20px;margin-top:20px">
-            <h4>Copies</h4>
+            <h4>Copies: {{ book.total_copies }}</h4>
             {% if user.is_superuser %}
                 <a class="btn btn-danger" href="{% url 'book_delete' pk=book.id %}">DELETE</a>
                 <a class="btn btn-success" href="{% url 'book_update' pk=book.id %}">Update</a>

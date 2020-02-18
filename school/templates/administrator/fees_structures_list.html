@@ -1,10 +1,10 @@
 {% extends 'school/base.html' %}
 
 {% block side_bar %}
-    {% include 'school/partial_active_element.html' with active='course_list' %}
+    {% include 'school/partial_active_element.html' with active='manage_fees' %}
 {% endblock side_bar %}
 
-{% block title %} Courses | A-SMS {% endblock title %}
+{% block title %} Fees Structure | A-SMS {% endblock title %}
 
 {% block content %}
 <style type="text/css">
@@ -24,15 +24,15 @@ overflow-y: auto;
         <h6 class="mb-2 mb-sm-0 pt-1">
             <a href="/">Home Page</a>
               <span>/</span>
-              <span>Courses</span>
+              <span>Fees Structure</span>
         </h6>
     </div>
   </div>
  {% if request.user.is_superuser %}
  <!-- Heading -->
     <h6 class="mb-2 mb-sm-0 pt-1">
-      <a href="{% url 'add_new_course' %}" class="btn btn-default btn-rounded mb-4">
-        Add New Course
+      <a href="{% url 'add_fees_structure' %}" class="btn btn-default btn-rounded mb-4">
+        Add New Fee Structure
       </a>
       <a class="pull-right btn btn-default btn-rounded mb-3" href="" class="btn btn-default btn-rounded mb-4">
         <i class="fa fa-file-pdf-o" aria-hidden="true"></i> PDF
@@ -42,57 +42,50 @@ overflow-y: auto;
 
 <div class="table-wrapper-scroll-y">
 
-  <table id="table_courses_list" class="table table-bordered table-striped">
+  <table class="table table-bordered table-striped">
     <thead>
       <tr>
         <th scope="col">#</th>
-        <th scope="col">Subject Code</th>
-        <th scope="col">Subject Title</th>
-        <th scope="col">Term</th>
         <th scope="col">Grade</th>
-        <th scope="col">Description</th>
+        <th scope="col">Fees To Be Paid</th>
+
         {% if request.user.is_superuser %}
         <th scope="col">Action</th>
         {% endif %}
       </tr>
     </thead>
-  <tbody>
-    {% for course in courses %}
-
+    {% for fee in fees reversed %}
+     <tbody>
         <tr>
           <th scope="row">{{ forloop.counter }}</th>
-            <td>{{ course.courseCode }}</td>
-            <td>{{ course.courseTitle }}</td>
-            <td>{{ course.semester }}</td>
-            <td>{{ course.level }}</td>
-            <td>{{ course.description }}</td>
+            <td>{{ fee.grade }}</td>
+            <td>ZMW {{ fee.fee }}</td>
+
             {% if request.user.is_superuser %}
             <td>
-              <a data-toggle="tooltip" title="view" class="blue-text"><i class="fa fa-user"></i></a>
-              <a data-toggle="tooltip" href="{% url 'course_edit' pk=course.id%}" title="edit" class="teal-text"><i class="fa fa-pencil"></i></a>
-              <a data-toggle="tooltip" href="{% url 'delete_course' pk=course.id %}" title="delete" class="red-text"><i class="fa fa-times"></i></a>
+              <a data-toggle="tooltip" href="{% url 'edit_fee_structure' fee.id %}" title="edit" class="teal-text"><i class="fa fa-pencil"></i></a>
+              <a data-toggle="tooltip" href="{% url 'fee_structure_delete' fee.id %}" title="delete" class="red-text"><i class="fa fa-times"></i></a>
             </td>
             {% endif %}
         </tr>
-
+    </tbody>
     {% empty %}
-
+    <tbody>
       <tr>
         <td></td>
         <td></td>
         <td></td>
         <td>
           <span class="text-center">
-            No Course Available <i><a class="indigo-text" href="{% url 'add_new_course' %}">Create Now</i>
+              No Fees Structure Available <i><a class="indigo-text" href="#">Create Now</a></i>
           </span>
         </td>
         <td></td>
         <td></td>
         <td></td>
       </tr>
-
+    </tbody>
     {% endfor %}
-  </tbody>
   </table>
 </div>
 </div>

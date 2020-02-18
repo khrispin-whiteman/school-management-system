@@ -109,7 +109,8 @@ class IssueBookView(CreateView):
 
     def form_valid(self, form):
         form.save()
-        return redirect('manage_classes')
+        return redirect('book_borrowers')
+
 
 @login_required
 def book_borrowers(request):

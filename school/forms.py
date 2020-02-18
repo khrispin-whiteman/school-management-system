@@ -427,11 +427,36 @@ class ClassTimetableForm(forms.ModelForm):
         fields = ['student', 'course', 'semester']
 
 
+class FeesStructureAddForm(forms.ModelForm):
+    grade = forms.ModelChoiceField(
+        queryset=Level.objects.all(),
+        widget=forms.Select(attrs={'class': 'browser-default custom-select'}),
+        empty_label='Choose Grade',
+    )
+
+
+    fee = forms.CharField(
+        max_length=200,
+        widget=forms.TextInput(
+            attrs={
+                'type': 'text',
+                'class': 'form-control',
+            }
+        ),
+        label="Amount",
+    )
+
+
+    class Meta:
+        model = Fees
+        fields = ['grade', 'fee',]
+
+
 class FeesCollectionForm(forms.ModelForm):
     semester = forms.ModelChoiceField(
         queryset=Semester.objects.filter(is_current_semester=True),
         widget=forms.Select(attrs={'class': 'browser-default custom-select'}),
-        empty_label='Choose Semester',
+        empty_label='Choose Term',
     )
     student = forms.ModelChoiceField(
         queryset=Student.objects.all(),

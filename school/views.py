@@ -15,9 +15,9 @@ from library.models import Book
 from school.decorators import lecturer_required, student_required
 from school.forms import StudentCourseRegistrationForm, CourseAllocationForm, CourseAddForm, StudentAddForm, \
     StaffAddForm, SemesterForm, SessionForm, SchoolClassAddForm, FeesCollectionForm, ProfileForm, SchoolClassEditForm, \
-    StudentAttendanceForm, ParentAddForm, ParentChildrenAddForm, SchoolDetails
+    StudentAttendanceForm, ParentAddForm, ParentChildrenAddForm, SchoolDetails, FeesStructureAddForm
 from school.models import CourseAllocation, Result, Student, TakenCourse, Semester, Course, Session, SchoolClass, User, \
-    SchoolFees, Level, Parent, Timetable, PupilAttendance
+    SchoolFees, Level, Parent, Timetable, PupilAttendance, Fees
 
 
 def index(request):
@@ -304,6 +304,7 @@ def pay_history(request):
                           'schoolfees': schoolfees,
                       })
 
+
 @login_required
 def parent_payment_history_view(request, pk):
     schoolfees = SchoolFees.objects.filter(student__id=pk)
@@ -314,7 +315,6 @@ def parent_payment_history_view(request, pk):
 
 
 # def pay_history_report()
-
 @login_required
 def profile_update(request):
     """ Check if the fired request is a POST then grab changes and update the records otherwise we show an empty form """
@@ -372,7 +372,6 @@ def student_list(request):
 
 
 @login_required
-@lecturer_required
 def student_fees(request):
     """ Show list of all registered students in the system """
     students = Student.objects.all()
@@ -386,6 +385,18 @@ def student_fees(request):
     return render(request, 'administrator/manage_fees_collection.html', context)
 
 
+@login_required
+def fees_structure(request):
+    """ Show list of all registered students in the system """
+    fees_strcture = Fees.objects.all()
+    user_type = "Fees"
+    context = {
+        "fees": fees_strcture,
+        "user_type": user_type,
+    }
+    return render(request, 'administrator/fees_structures_list.html', context)
+
+
 @method_decorator([login_required, ], name='dispatch')
 class FeesCollectionView(CreateView):
     model = SchoolFees
@@ -395,6 +406,37 @@ class FeesCollectionView(CreateView):
     def form_valid(self, form):
         form.save()
         return redirect('student_fees')
+
+
+@method_decorator([login_required, ], name='dispatch')
+class FeesStructureAddView(CreateView):
+    model = Fees
+    form_class = FeesStructureAddForm
+    template_name = 'administrator/fees_add_form.html'
+
+    def form_valid(self, form):
+        form.save()
+        return redirect('fees_structure_list')
+
+@login_required
+def edit_fee_structure(request, pk):
+    f_structure = get_object_or_404(Fees, pk=pk)
+    if request.method == "POST":
+        form = FeesStructureAddForm(request.POST, instance=f_structure)
+        if form.is_valid():
+            f_structure.save()
+            return redirect('fees_structure_list')
+    else:
+        form = FeesStructureAddForm(instance=f_structure)
+    return render(request, 'administrator/edit_fee_structure.html', {'form': form})
+
+
+@login_required
+def fee_structure_delete_view(request, pk):
+    f_structure = get_object_or_404(Fees, pk=pk)
+    f_structure.delete()
+    messages.success(request, "Session successfully deleted")
+    return redirect('fees_structure_list')
 
 
 @login_required
@@ -675,7 +717,6 @@ def session_update_view(request, pk):
 
 
 @login_required
-@lecturer_required
 def session_delete_view(request, pk):
     session = get_object_or_404(Session, pk=pk)
     if session.is_current_session == True:
@@ -688,14 +729,12 @@ def session_delete_view(request, pk):
 
 
 @login_required
-@lecturer_required
 def semester_list_view(request):
     semesters = Semester.objects.all().order_by('-semester')
     return render(request, 'administrator/manage_semester.html', {"semesters": semesters, })
 
 
 @login_required
-@lecturer_required
 def semester_add_view(request):
     if request.method == 'POST':
         form = SemesterForm(request.POST)
@@ -723,7 +762,6 @@ def semester_add_view(request):
 
 
 @login_required
-@lecturer_required
 def semester_update_view(request, pk):
     semester = Semester.objects.get(pk=pk)
     if request.method == 'POST':
@@ -756,7 +794,6 @@ def semester_update_view(request, pk):
 
 
 @login_required
-@lecturer_required
 def semester_delete_view(request, pk):
     semester = get_object_or_404(Semester, pk=pk)
     if semester.is_current_semester == True:
