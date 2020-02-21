@@ -45,17 +45,17 @@
                     <a href="{% url 'add_new_school_class' %}"><i>here</i></a>
                 {% endif %}
 
-                <a class="pull-right btn btn-default btn-rounded mb-3" href="{% url 'students_list_report' %}"
-                   class="btn btn-default btn-rounded mb-4">
-                    <i class="fa fa-file-pdf-o" aria-hidden="true"></i> PDF
-                </a>
+{#                <a class="pull-right btn btn-default btn-rounded mb-3" href="{% url 'students_list_report' %}"#}
+{#                   class="btn btn-default btn-rounded mb-4">#}
+{#                    <i class="fa fa-file-pdf-o" aria-hidden="true"></i> PDF#}
+{#                </a>#}
             </h6>
         {% endif %}
 
         <!--Card content-->
         <div class="table-wrapper-scroll-y">
 
-            <table {% if request.user.is_superuser %}id="table_students_list" {% else %}{% endif %}
+            <table {% if request.user.is_superuser %} id="table_students_list" {% else %}{% endif %}
                    class="table table-bordered table-striped">
                 <thead>
                 <tr>

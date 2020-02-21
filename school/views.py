@@ -63,14 +63,14 @@ def home(request):
 
 def get_chart(request, *args, **kwargs):
     all_query_score = ()
-    levels = (1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13) # all the levels in the department
+    levels = (1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13)  # all the levels in the department
 
-    #levels = Level.objects.all()
+    # levels = Level.objects.all()
 
     # iterate through the levels above
     for i in levels:
         # gather all the courses registered by the students of the current level in the loop
-        #all_query_score += (TakenCourse.objects.filter(student__level=i.level, semester__is_current_semester=True),)
+        # all_query_score += (TakenCourse.objects.filter(student__level=i.level, semester__is_current_semester=True),)
         all_query_score += (TakenCourse.objects.filter(student__level=i),)
         # print(all_query_score)
 
@@ -117,7 +117,7 @@ def get_chart(request, *args, **kwargs):
     if not all_query_score[4].count() == 0:
         fifth_level_avg = fifth_level_total / all_query_score[4].count()
 
-    #GRADE 6
+    # GRADE 6
     sixth_level_total = 0
     for i in all_query_score[5]:
         sixth_level_total += i.total
@@ -125,7 +125,7 @@ def get_chart(request, *args, **kwargs):
     if not all_query_score[5].count() == 0:
         sixth_level_avg = sixth_level_total / all_query_score[5].count()
 
-    #Grade 7
+    # Grade 7
     seventh_level_total = 0
     for i in all_query_score[6]:
         seventh_level_total += i.total
@@ -133,7 +133,7 @@ def get_chart(request, *args, **kwargs):
     if not all_query_score[6].count() == 0:
         seventh_level_avg = seventh_level_total / all_query_score[6].count()
 
-    #Grade 8
+    # Grade 8
     eighth_level_total = 0
     for i in all_query_score[7]:
         eighth_level_total += i.total
@@ -141,7 +141,7 @@ def get_chart(request, *args, **kwargs):
     if not all_query_score[7].count() == 0:
         eighth_level_avg = eighth_level_total / all_query_score[7].count()
 
-    #Grade 9
+    # Grade 9
     ninth_level_total = 0
     for i in all_query_score[8]:
         ninth_level_total += i.total
@@ -149,7 +149,7 @@ def get_chart(request, *args, **kwargs):
     if not all_query_score[8].count() == 0:
         ninth_level_avg = ninth_level_total / all_query_score[8].count()
 
-    #Grade 10
+    # Grade 10
     tenth_level_total = 0
     for i in all_query_score[9]:
         tenth_level_total += i.total
@@ -157,7 +157,7 @@ def get_chart(request, *args, **kwargs):
     if not all_query_score[9].count() == 0:
         tenth_level_avg = tenth_level_total / all_query_score[9].count()
 
-    #Grade 11
+    # Grade 11
     eleventh_level_total = 0
     for i in all_query_score[10]:
         eleventh_level_total += i.total
@@ -165,15 +165,13 @@ def get_chart(request, *args, **kwargs):
     if not all_query_score[10].count() == 0:
         eleventh_level_avg = eleventh_level_total / all_query_score[10].count()
 
-    #Grade 12
+    # Grade 12
     twelveth_level_total = 0
     for i in all_query_score[11]:
         twelveth_level_total += i.total
     twelveth_level_avg = 0
     if not all_query_score[11].count() == 0:
         twelveth_level_avg = twelveth_level_total / all_query_score[11].count()
-
-
 
     # do same  as above for # 6 Level students
     # sixth_level_total = 0
@@ -217,12 +215,12 @@ def profile(request):
     elif request.user.is_parent:
         print("IF parent::")
         parent = Parent.objects.get(user__pk=request.user.id)
-        #student = Student.objects.get(user__pk=parent.student.id)
-        #courses = TakenCourse.objects.filter(student__user__id=parent.student.id, )
+        # student = Student.objects.get(user__pk=parent.student.id)
+        # courses = TakenCourse.objects.filter(student__user__id=parent.student.id, )
 
         context = {
-            #'courses': courses,
-            #'level': level,
+            # 'courses': courses,
+            # 'level': level,
             'parent': parent,
         }
         return render(request, 'account/profile.html', context)
@@ -285,12 +283,9 @@ def pay_history(request):
         parent = User.objects.get(id=request.user.id)
         students = parent.student.all()
 
-
-
         # schoolfees = []
         # for s in students:
         #     schoolfees.extend(SchoolFees.objects.filter(student__user__id=s.id))
-
 
         return render(request, 'students/pay_history.html',
                       {
@@ -418,6 +413,7 @@ class FeesStructureAddView(CreateView):
         form.save()
         return redirect('fees_structure_list')
 
+
 @login_required
 def edit_fee_structure(request, pk):
     f_structure = get_object_or_404(Fees, pk=pk)
@@ -485,7 +481,7 @@ def get_courses_for_class(request, pk):
 class SchoolClassAddView(CreateView):
     model = SchoolClass
     form_class = SchoolClassAddForm
-    #teachers = User.objects.get(is_lecturer=False)
+    # teachers = User.objects.get(is_lecturer=False)
     template_name = 'administrator/add_class.html'
 
     def get_context_data(self, **kwargs):
@@ -532,9 +528,9 @@ def student_attendance_list_by_class(request):
 @lecturer_required
 def student_attendance_mark(request, pk):
     """ Show list of all registered students in the system """
-    school_class = SchoolClass.objects.get(pk=pk,)
+    school_class = SchoolClass.objects.get(pk=pk, )
     students = Student.objects.filter(schoolclass=school_class)
-    #fees = SchoolFees.objects.all()
+    # fees = SchoolFees.objects.all()
     count = students.count()
     attendance_formset = formset_factory(StudentAttendanceForm, extra=count)
     date = datetime.today().date().strftime('%d-%m-%Y')
@@ -548,7 +544,8 @@ def student_attendance_mark(request, pk):
                 date = datetime.today()
                 mark = form.cleaned_data['mark_attendance']
                 print(mark)
-                check_attendance = PupilAttendance.objects.filter(nameofclass=school_class, daysdate=date, student=student)
+                check_attendance = PupilAttendance.objects.filter(nameofclass=school_class, daysdate=date,
+                                                                  student=student)
                 print(check_attendance)
 
                 # if check_attendance:
@@ -572,7 +569,7 @@ def student_attendance_mark(request, pk):
                             attendance.mark_attendance = mark
                         if mark == 'Present':
                             attendance.mark_attendance = mark
-                    #attendance.mark_attendance = mark
+                    # attendance.mark_attendance = mark
                     attendance.save()
 
                 else:
@@ -648,7 +645,7 @@ def student_attendance_archive(request, class_id):
 @lecturer_required
 def staff_list(request):
     """ Show list of all registered staff """
-    staff = User.objects.filter(is_student=False)
+    staff = User.objects.filter(is_student=False, is_parent=False)
     user_type = "Staff"
     context = {
         "staff": staff,
@@ -834,6 +831,7 @@ class ParentAddView(CreateView):
         user = form.save()
         return redirect('add_new_parents_child', pk=user.id)
 
+
 @method_decorator([login_required, lecturer_required], name='dispatch')
 class ParentChildrenAddView(CreateView):
     model = User
@@ -857,12 +855,12 @@ def parent_details(request, pk):
 
     students = Student.objects.filter(parent__user_id=pk)
     return render(request, 'parent/parent_detail.html',
-                      {
+                  {
 
-                          'parent': parent,
-                          'students': students,
+                      'parent': parent,
+                      'students': students,
 
-                      })
+                  })
 
     # try:
     #     students = parent.student()
@@ -882,24 +880,73 @@ def parent_details(request, pk):
     #
     #                   })
 
-
-
-    #takencourse = TakenCourse.objects.filter(student__id=pk, semester__is_current_semester=True)
-
+    # takencourse = TakenCourse.objects.filter(student__id=pk, semester__is_current_semester=True)
 
 
 @login_required
-@lecturer_required
 def edit_staff(request, pk):
-    staff = get_object_or_404(User, pk=pk)
-    if request.method == "POST":
-        form = StaffAddForm(request.POST, instance=staff)
+    user = get_object_or_404(User, pk=pk)
+
+    if request.method == 'POST':
+        form = ProfileForm(request.POST)
         if form.is_valid():
-            staff.save()
-            return redirect('staff_list')
+            user.first_name = form.cleaned_data.get('first_name')
+            user.last_name = form.cleaned_data.get('last_name')
+            user.email = form.cleaned_data.get('email')
+            user.phone = form.cleaned_data.get('phone')
+            user.address = form.cleaned_data.get('address')
+            if request.FILES:
+                user.picture = request.FILES['picture']
+            user.save()
+            messages.success(request, 'Your profile was successfully edited.')
+            return redirect("user_profile", pk)
     else:
-        form = StaffAddForm(instance=staff)
-    return render(request, 'staff/edit_staff.html', {'form': form})
+        form = ProfileForm(instance=user, initial={
+            'firstname': user.first_name,
+            'lastname': user.last_name,
+            'email': user.email,
+            'phone': user.phone,
+            'picture': user.picture,
+        })
+
+    return render(request, 'account/edit_staff_admin.html',
+                  {
+                      'form': form,
+                      'staff_id': pk,
+                  })
+
+
+@login_required
+def edit_parent(request, pk):
+    user = get_object_or_404(User, pk=pk)
+
+    if request.method == 'POST':
+        form = ProfileForm(request.POST)
+        if form.is_valid():
+            user.first_name = form.cleaned_data.get('first_name')
+            user.last_name = form.cleaned_data.get('last_name')
+            user.email = form.cleaned_data.get('email')
+            user.phone = form.cleaned_data.get('phone')
+            user.address = form.cleaned_data.get('address')
+            if request.FILES:
+                user.picture = request.FILES['picture']
+            user.save()
+            messages.success(request, 'Your profile was successfully edited.')
+            return redirect("parent_details", pk)
+    else:
+        form = ProfileForm(instance=user, initial={
+            'firstname': user.first_name,
+            'lastname': user.last_name,
+            'email': user.email,
+            'phone': user.phone,
+            'picture': user.picture,
+        })
+
+    return render(request, 'account/edit_parent_admin.html',
+                  {
+                      'form': form,
+                      'parent_id': pk,
+                  })
 
 
 @login_required
@@ -920,7 +967,6 @@ def make_staff_admin(request, pk):
 
 
 @login_required
-@lecturer_required
 def remove_staff_admin(request, pk):
     staff = get_object_or_404(User, pk=pk)
     staff.is_superuser = False
@@ -946,17 +992,38 @@ class StudentAddView(CreateView):
 
 
 @login_required
-@lecturer_required
 def edit_student(request, pk):
     student = get_object_or_404(Student, pk=pk)
-    if request.method == "POST":
-        form = StudentAddForm(request.POST, instance=student)
+    user = User.objects.get(pk=student.user.pk)
+
+    print("STUDENT NAME: ", user.first_name)
+    if request.method == 'POST':
+        form = ProfileForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('student_list')
+            student.user.first_name = form.cleaned_data.get('first_name')
+            student.user.last_name = form.cleaned_data.get('last_name')
+            student.user.email = form.cleaned_data.get('email')
+            student.user.phone = form.cleaned_data.get('phone')
+            student.user.address = form.cleaned_data.get('address')
+            if request.FILES:
+                student.user.picture = request.FILES['picture']
+            student.user.save()
+            messages.success(request, 'Profile was successfully edited.')
+            return redirect("student_details", pk)
     else:
-        form = StudentAddForm(instance=student)
-    return render(request, 'students/edit_student.html', {'form': form})
+        form = ProfileForm(instance=user, initial={
+            'firstname': student.user.first_name,
+            'lastname': student.user.last_name,
+            'email': student.user.email,
+            'phone': student.user.phone,
+            'picture': student.user.picture,
+        })
+
+    return render(request, 'administrator/edit_student_admin.html',
+                  {
+                      'form': form,
+                      'student_id': pk,
+                  })
 
 
 @login_required
@@ -1003,7 +1070,7 @@ def class_edit(request, pk):
             thisclass.grade = form.cleaned_data.get('grade')
             thisclass.classname = form.cleaned_data.get('classname')
             thisclass.classteacher = form.cleaned_data.get('classteacher')
-            #thisclass.grade = form.cleaned_data.get('grade')
+            # thisclass.grade = form.cleaned_data.get('grade')
             # user.last_name = form.cleaned_data.get('last_name')
             # user.email = form.cleaned_data.get('email')
             # user.phone = form.cleaned_data.get('phone')
@@ -1205,7 +1272,6 @@ def add_score_for(request, id):
 @login_required
 @student_required
 def view_result(request):
-
     if request.user.is_parent:
         parent = Parent.objects.get(user=request.user)
         students = parent.student.all()
@@ -1262,6 +1328,7 @@ def parent_attendance_view(request, pk):
     }
 
     return render(request, 'parent/parent_attendance_view.html', context)
+
 
 # @login_required
 # def mark_attendance(request,pk):
@@ -1345,14 +1412,13 @@ def view_result_by_parent(request, pk):
     result = Result.objects.filter(student__pk=pk)
 
     context = {
-                "courses": courses,
-                "result": result,
-                "student": student,
-                # "previousCGPA": previousCGPA,
-            }
+        "courses": courses,
+        "result": result,
+        "student": student,
+        # "previousCGPA": previousCGPA,
+    }
 
     return render(request, 'parent/parent_view_results.html', context)
-
 
     # current_semester = Semester.objects.get(is_current_semester=True)
 

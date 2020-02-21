@@ -40,7 +40,7 @@
             </a>
         </h6>
         <!--Card content-->
-        <table class="table table-striped">
+        <table class="table table-striped" id="table_class_list">
             <thead>
             <tr>
                 <th scope="col">#</th>
@@ -50,8 +50,9 @@
                 <th scope="col">Action</th>
             </tr>
             </thead>
+        <tbody>
             {% for class in classes %}
-                <tbody>
+
                 <tr>
                     <th scope="row">{{ forloop.counter }}</th>
                     <td>{{ class.grade }}</td>
@@ -69,17 +70,16 @@
                         </a>
                     </td>
                 </tr>
-                </tbody>
                 {% empty %}
-                <tbody>
                 <tr>
                     <th></th>
                     <td>No Classes Available <i class="blue-text"><a href="#">Add New</a></i></td>
                     <td></td>
                     <td></td>
                 </tr>
-                </tbody>
+
             {% endfor %}
+        </tbody>
         </table>
     </div>
     </div>

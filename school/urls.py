@@ -57,6 +57,7 @@ urlpatterns = [
 
     path('parents/', views.parent_list, name='parent_list'),
     path('parents/<int:pk>/', views.parent_details, name='parent_details'),
+    path('parents/edit/<int:pk>/', views.edit_parent, name="edit_parent"),
     path('parents/viewresults/<int:pk>/', views.view_result_by_parent, name='view_result_by_parent'),
     path('parents/paymentshistoryview/<int:pk>/', views.parent_payment_history_view,
          name='parent_payment_history_view'),

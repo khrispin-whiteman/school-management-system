@@ -154,7 +154,7 @@ class ParentAddForm(UserCreationForm):
 
 class ParentChildrenAddForm(forms.ModelForm):
     user = forms.ModelChoiceField(
-        queryset=User.objects.filter(),
+        queryset=User.objects.filter(is_parent=True),
         widget=forms.Select(attrs={'class': 'browser-default custom-select'}),
         empty_label='Choose Parent',
     )

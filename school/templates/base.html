@@ -386,6 +386,59 @@
             }]
         });
     });
+
+    $(document).ready(function () {
+        $('#table_class_list').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    extend: 'copy',
+                    footer: true,
+                    alignment: "center",
+                    exportOptions: {
+                        columns: [1, 2, 3, 4, 5]
+                    }
+                },
+                {
+                    extend: 'csv',
+                    footer: true,
+                    alignment: "center",
+                    exportOptions: {
+                        columns: [1, 2, 3, 4, 5]
+                    }
+                },
+                {
+                    extend: 'excel',
+                    footer: true,
+                    alignment: "center",
+                    exportOptions: {
+                        columns: [1, 2, 3, 4, 5]
+                    }
+                },
+                {
+                    extend: 'pdf',
+                    footer: true,
+                    alignment: "center",
+                    exportOptions: {
+                        columns: [1, 2, 3, 4, 5]
+                    }
+                },
+                {
+                    extend: 'print',
+                    footer: true,
+                    exportOptions: {
+                        alignment: "center",
+                        columns: [1, 2, 3, 4, 5]
+                    }
+                },
+
+            ],
+            columnDefs: [{
+                targets: -1,
+                visible: false
+            }]
+        });
+    });
 </script>
 
 

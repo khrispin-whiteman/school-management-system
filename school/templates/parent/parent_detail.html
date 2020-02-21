@@ -46,7 +46,7 @@
                     <!-- Card image -->
                     <div class="view overlay">
                         <img class="card-img-top" src="{{ parent.get_picture }}" alt="User Image">
-                        <a class="mask" href="{% url 'edit_profile' %}">
+                        <a class="mask" href="{% url 'edit_parent' parent.id %}">
                             <div class="mask white-text">Change Picture</div>
                         </a>
                     </div>
@@ -58,7 +58,7 @@
                         <br>
                         <small class="card-title">Role: Parent</small>
                         <br>
-                        <a href="#" class="btn btn-primary">Edit Profile</a>
+                        <a href="{% url 'edit_parent' parent.id %}" class="btn btn-primary">Edit Profile</a>
                     </div>
 
 
