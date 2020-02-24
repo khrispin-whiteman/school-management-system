@@ -1,4 +1,0 @@
-Django==2.2
-xhtml2pdf==0.2.3
-WeasyPrint==50
-django_import_export==2.0

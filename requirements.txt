@@ -1,0 +1,5 @@
+django_import_export==2.0
+Django==2.2
+WeasyPrint==50
+xhtml2pdf==0.2.3
+django_crispy_forms==1.8.0
