@@ -3,7 +3,7 @@ from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
 from django.forms.formsets import formset_factory
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils.timezone import datetime
 # Create your views here.
@@ -17,7 +17,7 @@ from school.forms import StudentCourseRegistrationForm, CourseAllocationForm, Co
     StaffAddForm, SemesterForm, SessionForm, SchoolClassAddForm, FeesCollectionForm, ProfileForm, SchoolClassEditForm, \
     StudentAttendanceForm, ParentAddForm, ParentChildrenAddForm, SchoolDetails, FeesStructureAddForm
 from school.models import CourseAllocation, Result, Student, TakenCourse, Semester, Course, Session, SchoolClass, User, \
-    SchoolFees, Level, Parent, Timetable, PupilAttendance, Fees
+    SchoolFees, Level, Parent, Timetable, PupilAttendance, Fees, Children
 
 
 def index(request):
@@ -41,7 +41,7 @@ def home(request):
     """
     students = Student.objects.all().count()
     parents = Parent.objects.all().count()
-    staff = User.objects.filter(is_lecturer=True).count()
+    staff = User.objects.filter(is_student=False, is_parent=False, is_librarian=False).count()
     courses = Course.objects.all().count()
     current_semester = Semester.objects.get(is_current_semester=True)
     no_of_1st_class_students = Result.objects.filter(cgpa__gte=4.5).count()
@@ -215,12 +215,12 @@ def profile(request):
     elif request.user.is_parent:
         print("IF parent::")
         parent = Parent.objects.get(user__pk=request.user.id)
-        # student = Student.objects.get(user__pk=parent.student.id)
+        students = Children.objects.filter(parent__user__pk=request.user.id)
         # courses = TakenCourse.objects.filter(student__user__id=parent.student.id, )
 
         context = {
             # 'courses': courses,
-            # 'level': level,
+            'students': students,
             'parent': parent,
         }
         return render(request, 'account/profile.html', context)
@@ -281,7 +281,7 @@ def user_profile(request, id):
 def pay_history(request):
     if request.user.is_parent:
         parent = User.objects.get(id=request.user.id)
-        students = parent.student.all()
+        students = Children.objects.filter(parent__user__id=request.user.id)
 
         # schoolfees = []
         # for s in students:
@@ -645,7 +645,7 @@ def student_attendance_archive(request, class_id):
 @lecturer_required
 def staff_list(request):
     """ Show list of all registered staff """
-    staff = User.objects.filter(is_student=False, is_parent=False)
+    staff = User.objects.filter(is_student=False, is_parent=False, is_librarian=False)
     user_type = "Staff"
     context = {
         "staff": staff,
@@ -664,6 +664,12 @@ def parent_list(request):
         "user_type": user_type,
     }
     return render(request, 'parent/parent_list.html', context)
+
+@login_required
+def delete_parent(request, pk):
+    staff = get_object_or_404(User, pk=pk)
+    staff.delete()
+    return redirect('parent_list')
 
 
 @login_required
@@ -853,7 +859,7 @@ class ParentChildrenAddView(CreateView):
 def parent_details(request, pk):
     parent = User.objects.get(is_parent=True, id=pk)
 
-    students = Student.objects.filter(parent__user_id=pk)
+    students = Children.objects.filter(parent__user_id=pk)
     return render(request, 'parent/parent_detail.html',
                   {
 
@@ -916,6 +922,8 @@ def edit_staff(request, pk):
                   })
 
 
+
+
 @login_required
 def edit_parent(request, pk):
     user = get_object_or_404(User, pk=pk)
@@ -931,7 +939,7 @@ def edit_parent(request, pk):
             if request.FILES:
                 user.picture = request.FILES['picture']
             user.save()
-            messages.success(request, 'Your profile was successfully edited.')
+            messages.success(request, 'Profile was successfully edited.')
             return redirect("parent_details", pk)
     else:
         form = ProfileForm(instance=user, initial={
@@ -972,6 +980,7 @@ def remove_staff_admin(request, pk):
     staff.is_superuser = False
     staff.save()
     return redirect('staff_list')
+
 
 
 @method_decorator([login_required, lecturer_required], name='dispatch')
@@ -1270,11 +1279,10 @@ def add_score_for(request, id):
 
 
 @login_required
-@student_required
 def view_result(request):
     if request.user.is_parent:
         parent = Parent.objects.get(user=request.user)
-        students = parent.student.all()
+        students = Children.objects.filter(parent__user__id=request.user.id)
 
         context = {
             'students': students,
@@ -1300,7 +1308,7 @@ def view_result(request):
 def student_attendance(request):
     if request.user.is_parent:
         parent = Parent.objects.get(user=request.user)
-        students = parent.student.all()
+        students = Children.objects.filter(parent__user_id=request.user.id)
 
         context = {
             'students': students,
@@ -1405,11 +1413,13 @@ def parent_attendance_view(request, pk):
 
 
 @login_required
-@student_required
 def view_result_by_parent(request, pk):
     student = Student.objects.get(id=pk)
     courses = TakenCourse.objects.filter(student__id=pk)
     result = Result.objects.filter(student__pk=pk)
+
+    if courses.count() == 0:
+        return HttpResponse("No Registered Courses!")
 
     context = {
         "courses": courses,

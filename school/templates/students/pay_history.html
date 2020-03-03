@@ -1,10 +1,16 @@
 {% extends 'school/base.html' %}
 
 {% block side_bar %}
-    {% include 'school/partial_active_element.html' with active='course_list' %}
+    {% include 'school/partial_active_element.html' with active='payment' %}
 {% endblock side_bar %}
 
-{% block title %} {{ request.user.username }}'s Pay History | A-SMS {% endblock title %}
+{% block title %}
+    {% if request.user.is_student %}
+        {{ request.user.username }}'s Payment Records
+        {% elif request.user.is_parent %}
+        Payment Records
+    {% endif %}
+{% endblock title %}
 
 {% block content %}
     <style type="text/css">
@@ -24,15 +30,15 @@
                 <h6 class="mb-2 mb-sm-0 pt-1">
                     <a href="/">Home Page</a>
                     <span>/</span>
-                    <span>Payments History</span>
+                    <span>Payment Records</span>
                 </h6>
-                {% if request.user.is_student %}
-                    <h6 class="mb-2 mb-sm-0 pt-1">
-                        <a href="{% url 'payments_history_report' %}" class="btn btn-primary btn-sm">
-                            Generate Payment Report
-                        </a>
-                    </h6>
-                {% endif %}
+{#                {% if request.user.is_student %}#}
+{#                    <h6 class="mb-2 mb-sm-0 pt-1">#}
+{#                        <a href="{% url 'payments_history_report' %}" class="btn btn-primary btn-sm">#}
+{#                            Generate Payment Report#}
+{#                        </a>#}
+{#                    </h6>#}
+{#                {% endif %}#}
             </div>
         </div>
 
@@ -41,7 +47,7 @@
                 {% for stud in students %}
                     <div class="list-group-item">
                         <a href="{% url 'parent_payment_history_view' stud.id %}">
-                            {{ stud.user.get_full_name }}, Grade: {{ stud.level }}
+                            {{ stud.student.user.get_full_name }}, Grade: {{ stud.student.level }}
                         </a>
                     </div>
                 {% empty %}
@@ -53,7 +59,7 @@
         {% if request.user.is_student %}
             <div class="table-wrapper-scroll-y">
 
-                <table class="table table-bordered table-striped">
+                <table id="table_student_pay_history_list" class="table table-bordered table-striped">
                     <thead>
                     <tr>
                         <th scope="col">#</th>
@@ -67,8 +73,9 @@
                         <th scope="col">Date Of Payment</th>
                     </tr>
                     </thead>
+                    <tbody>
                     {% for fee in schoolfees %}
-                        <tbody>
+
                         <tr>
                             <th scope="row">{{ forloop.counter }}</th>
                             <td>{{ fee.student.user.get_full_name }}</td>
@@ -80,29 +87,23 @@
                             <td>{{ fee.paystatus }}</td>
                             <td>{{ fee.paymentdate }}</td>
                         </tr>
-                        </tbody>
                     {% empty %}
-                        <tbody>
                         <tr>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td>
           <span class="text-center">
-              No Course Available
-              <i>
-              <a class="indigo-text" href="{% url 'add_new_course' %}">
-                  Create Now
-              </a>
-              </i>
+              No Payment Records Found
           </span>
                             </td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        </tbody>
+
                     {% endfor %}
+                    </tbody>
                 </table>
             </div>
         {% endif %}

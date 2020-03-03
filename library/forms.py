@@ -178,3 +178,15 @@ class BookForm(forms.ModelForm):
     class Meta:
         model = Book
         fields = '__all__'
+
+
+class GenreForm(forms.ModelForm):
+    class Meta:
+        model = Genre
+        fields = ['name']
+
+
+class LanguageForm(forms.ModelForm):
+    class Meta:
+        model = Language
+        fields = ['name']

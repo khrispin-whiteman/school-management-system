@@ -1,10 +1,14 @@
 {% extends 'school/base.html' %}
 
 {% block side_bar %}
-    {% include 'school/partial_active_element.html' with active='course_list' %}
+    {% include 'school/partial_active_element.html' with active='payment' %}
 {% endblock side_bar %}
 
-{% block title %} {{ request.user.username }}'s Pay History | A-SMS {% endblock title %}
+{% block title %}
+    {% for fee in schoolfees %}
+        {{ fee.student.user.get_full_name }}'s Pay History | A-SMS
+    {% endfor %}
+{% endblock title %}
 
 {% block content %}
     <style type="text/css">
@@ -26,63 +30,63 @@
                     <span>/</span>
                     <span>Payments History</span>
                 </h6>
-                    <h6 class="mb-2 mb-sm-0 pt-1">
-                        <a target="_blank" href="" class="btn btn-primary btn-sm">
-                            Generate Payment Report
-                        </a>
-                    </h6>
+                {#                    <h6 class="mb-2 mb-sm-0 pt-1">#}
+                {#                        <a target="_blank" href="" class="btn btn-primary btn-sm">#}
+                {#                            Generate Payment Report#}
+                {#                        </a>#}
+                {#                    </h6>#}
             </div>
         </div>
 
-            <div class="table-wrapper-scroll-y">
+        <div class="table-wrapper-scroll-y">
 
-                <table class="table table-bordered table-striped">
-                    <thead>
+            <table id="table_student_pay_history_list" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Semester</th>
+                    <th scope="col">Fees To Be Paid</th>
+                    <th scope="col">Total Amount Paid</th>
+                    <th scope="col">Actual Amount Paid</th>
+                    <th scope="col">Balance</th>
+                    <th scope="col">Payment Status</th>
+                    <th scope="col">Date Of Payment</th>
+                </tr>
+                </thead>
+                {% for fee in schoolfees %}
+                    <tbody>
                     <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Semester</th>
-                        <th scope="col">Fees To Be Paid</th>
-                        <th scope="col">Total Amount Paid</th>
-                        <th scope="col">Actual Amount Paid</th>
-                        <th scope="col">Balance</th>
-                        <th scope="col">Payment Status</th>
-                        <th scope="col">Date Of Payment</th>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td>{{ fee.student.user.get_full_name }}</td>
+                        <td>{{ fee.semester }}</td>
+                        <td>{{ fee.gradefees }}</td>
+                        <td>{{ fee.amountpaid }}</td>
+                        <td>{{ fee.actualamountpaid }}</td>
+                        <td>{{ fee.balance }}</td>
+                        <td>{{ fee.paystatus }}</td>
+                        <td>{{ fee.paymentdate }}</td>
                     </tr>
-                    </thead>
-                    {% for fee in schoolfees %}
-                        <tbody>
-                        <tr>
-                            <th scope="row">{{ forloop.counter }}</th>
-                            <td>{{ fee.student.user.get_full_name }}</td>
-                            <td>{{ fee.semester }}</td>
-                            <td>{{ fee.gradefees }}</td>
-                            <td>{{ fee.amountpaid }}</td>
-                            <td>{{ fee.actualamountpaid }}</td>
-                            <td>{{ fee.balance }}</td>
-                            <td>{{ fee.paystatus }}</td>
-                            <td>{{ fee.paymentdate }}</td>
-                        </tr>
-                        </tbody>
-                    {% empty %}
-                        <tbody>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td>
+                    </tbody>
+                {% empty %}
+                    <tbody>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>
           <span class="text-center">
               No Payment Record Found
           </span>
-                            </td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        </tbody>
-                    {% endfor %}
-                </table>
-            </div>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    </tbody>
+                {% endfor %}
+            </table>
+        </div>
 
 
     </div>

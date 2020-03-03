@@ -128,7 +128,7 @@
 
                     </tr>
                     </tbody>
-                    {% empty %}
+                {% empty %}
                     <tbody>
                     <tr>
                         <td></td>
@@ -136,7 +136,10 @@
                         <td></td>
                         <td>
           <span class="text-center">
-            No Course Available <i><a class="indigo-text" href="{% url 'add_new_course' %}">Create Now</i>
+          No Timetable Found
+          {% if request.user.is_superuser %}
+              <i><a class="indigo-text" href="{% url 'add_new_course' %}">Create Now</a></i>
+          {% endif %}
           </span>
                         </td>
                         <td></td>

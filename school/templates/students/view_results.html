@@ -1,6 +1,6 @@
 {% extends 'school/base.html' %}
 
-{% block title %} Results | ARMS {% endblock title %}
+{% block title %} Results{% endblock title %}
 
 {% block side_bar %}
     {% include 'school/partial_active_element.html' with active='view_results' %}
@@ -24,6 +24,25 @@
                 -ms-overflow-style: -ms-autohiding-scrollbar;
             }
         </style>
+
+        <!-- Heading -->
+        <div class="card mb-4 wow fadeIn">
+
+            <!--Card content-->
+            <div class="card-body d-sm-flex justify-content-between">
+
+                <h6 class="mb-2 mb-sm-0 pt-1">
+                    <a href="/">Home Page</a>
+                    <span>/</span>
+                    {% if request.user.is_student %}
+                        <span>{{ request.user.get_full_name }}</span>
+                    {% else %}
+                        My Students
+                    {% endif %}
+                </h6>
+            </div>
+
+        </div>
         {#        <center>{{ student.level }}L Result</center>#}
         {#        <div class="table-wrapper-scroll-y">#}
         {#            <table class="table table-bordered table-striped">#}
@@ -137,7 +156,7 @@
             {% for stud in students %}
                 <div class="list-group-item">
                     <a href="{% url 'view_result_by_parent' stud.id %}">
-                        {{ stud.user.get_full_name }}, Grade: {{ stud.level }}
+                        {{ stud.student.user.get_full_name }}, Grade: {{ stud.student.level }}
                     </a>
                 </div>
             {% empty %}
@@ -159,7 +178,8 @@
                         <div class="table_view col-xs-12 "
                              style="background-color: darkgrey; border: 1px solid rgba(42,24,26,0.56); border-radius: 4px; padding: 10px;">
                             <div class="table-responsive">
-                                <table id="table_students_results" class="table table-bordered" style="grid-template-columns: 1fr 1fr 1fr;">
+                                <table id="table_students_results" class="table table-bordered"
+                                       style="grid-template-columns: 1fr 1fr 1fr;">
                                     <br>
                                     <div class="inline-group">
                                         <a href="#" class="btn btn-sm btn-default">

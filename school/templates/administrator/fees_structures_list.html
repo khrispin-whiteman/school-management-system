@@ -4,90 +4,90 @@
     {% include 'school/partial_active_element.html' with active='manage_fees' %}
 {% endblock side_bar %}
 
-{% block title %} Fees Structure | A-SMS {% endblock title %}
+{% block title %} Fees Structures | A-SMS {% endblock title %}
 
 {% block content %}
-<style type="text/css">
-  .table-wrapper-scroll-y {
-display: block;
-max-height: 350px;
-overflow-y: auto;
--ms-overflow-style: -ms-autohiding-scrollbar;
-}
-</style>
+    <style type="text/css">
+        .table-wrapper-scroll-y {
+            display: block;
+            max-height: 350px;
+            overflow-y: auto;
+            -ms-overflow-style: -ms-autohiding-scrollbar;
+        }
+    </style>
 
-<div class="container-fluid mt-5">
-  <!-- Heading -->
-  <div class="card mb-4 wow fadeIn">
-  <!--Card content-->
-    <div class="card-body d-sm-flex justify-content-between">
-        <h6 class="mb-2 mb-sm-0 pt-1">
-            <a href="/">Home Page</a>
-              <span>/</span>
-              <span>Fees Structure</span>
-        </h6>
-    </div>
-  </div>
- {% if request.user.is_superuser %}
- <!-- Heading -->
-    <h6 class="mb-2 mb-sm-0 pt-1">
-      <a href="{% url 'add_fees_structure' %}" class="btn btn-default btn-rounded mb-4">
-        Add New Fee Structure
-      </a>
-      <a class="pull-right btn btn-default btn-rounded mb-3" href="" class="btn btn-default btn-rounded mb-4">
-        <i class="fa fa-file-pdf-o" aria-hidden="true"></i> PDF
-      </a>
-    </h6>
- {% endif %}
-
-<div class="table-wrapper-scroll-y">
-
-  <table class="table table-bordered table-striped">
-    <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Grade</th>
-        <th scope="col">Fees To Be Paid</th>
-
+    <div class="container-fluid mt-5">
+        <!-- Heading -->
+        <div class="card mb-4 wow fadeIn">
+            <!--Card content-->
+            <div class="card-body d-sm-flex justify-content-between">
+                <h6 class="mb-2 mb-sm-0 pt-1">
+                    <a href="/">Home Page</a>
+                    <span>/</span>
+                    <span>Fees Structure</span>
+                </h6>
+            </div>
+        </div>
         {% if request.user.is_superuser %}
-        <th scope="col">Action</th>
+            <!-- Heading -->
+            <h6 class="mb-2 mb-sm-0 pt-1">
+                <a href="{% url 'add_fees_structure' %}" class="btn btn-default btn-rounded mb-4">
+                    Add New Fee Structure
+                </a>
+                {#      <a class="pull-right btn btn-default btn-rounded mb-3" href="" class="btn btn-default btn-rounded mb-4">#}
+                {#        <i class="fa fa-file-pdf-o" aria-hidden="true"></i> PDF#}
+                {#      </a>#}
+            </h6>
         {% endif %}
-      </tr>
-    </thead>
-    {% for fee in fees reversed %}
-     <tbody>
-        <tr>
-          <th scope="row">{{ forloop.counter }}</th>
-            <td>{{ fee.grade }}</td>
-            <td>ZMW {{ fee.fee }}</td>
 
-            {% if request.user.is_superuser %}
-            <td>
-              <a data-toggle="tooltip" href="{% url 'edit_fee_structure' fee.id %}" title="edit" class="teal-text"><i class="fa fa-pencil"></i></a>
-              <a data-toggle="tooltip" href="{% url 'fee_structure_delete' fee.id %}" title="delete" class="red-text"><i class="fa fa-times"></i></a>
-            </td>
-            {% endif %}
-        </tr>
-    </tbody>
-    {% empty %}
-    <tbody>
-      <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>
+        <div class="table-wrapper-scroll-y">
+
+            <table id="table_feestructures_list" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Grade</th>
+                    <th scope="col">Fees To Be Paid</th>
+
+                    {% if request.user.is_superuser %}
+                        <th scope="col">Action</th>
+                    {% endif %}
+                </tr>
+                </thead>
+                <tbody>
+                {% for fee in fees reversed %}
+                    <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td>{{ fee.grade }}</td>
+                        <td>ZMW {{ fee.fee }}</td>
+
+                        {% if request.user.is_superuser %}
+                            <td>
+                                <a data-toggle="tooltip" href="{% url 'edit_fee_structure' fee.id %}" title="edit"
+                                   class="teal-text btn btn-sm btn-primary btn-outline-brown">EDIT</a>
+                                <a data-toggle="tooltip" href="{% url 'fee_structure_delete' fee.id %}" title="delete"
+                                   class="red-text btn btn-sm btn-primary btn-outline-red">DELETE</a>
+                            </td>
+                        {% endif %}
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>
           <span class="text-center">
               No Fees Structure Available <i><a class="indigo-text" href="#">Create Now</a></i>
           </span>
-        </td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-    </tbody>
-    {% endfor %}
-  </table>
-</div>
-</div>
-<br>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <br>
 {% endblock %}

@@ -1,6 +1,6 @@
 {% extends 'school/base.html' %}
 
-{% block title %} Edit Term | A-SMS {% endblock title %}
+{% block title %} Account Edit {% endblock title %}
 
 
 {% block side_bar %}
@@ -18,7 +18,7 @@
         {% endfor %}
       {% endif %}
 
-      <form role="form" class="form-horizontal" method="post" action="" enctype="multipart/form-data">
+      <form role="form" class="form-horizontal" method="post" action="{% url 'edit_librarian' librarian_id %}" enctype="multipart/form-data">
         {% csrf_token %}
         {% for field in form.visible_fields %}
           <div class="form-group{% if field.errors %} has-error{% endif %}">

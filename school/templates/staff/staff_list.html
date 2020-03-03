@@ -45,7 +45,7 @@ overflow-y: auto;
                 <!--Card content-->
   <div class="table-wrapper-scroll-y">
 
-  <table id="table_id" class="table table-bordered table-striped">
+  <table id="table_courses_list" class="table table-bordered table-striped">
                      <thead>
                         <tr>
                           <th scope="col">#</th>
@@ -71,7 +71,7 @@ overflow-y: auto;
                           <td>{% if staff.phone %} {{ staff.phone }} {% else %}
                           <span class="red-text">N/A</span>{% endif %}</td>
                           <td>{% if staff.address %} {{ staff.address }} {% else %} N/A {% endif %}</td>
-                          <td>{% if staff.is_superuser %} Superuser {% else %} Teacher {% endif %}</td>
+                          <td>{% if staff.is_superuser %} Superuser {% elif staff.is_librarian %} Librarian {% else %} Teacher {% endif %}</td>
                           <td><img class="img img-rounded" width="30" src="{{ staff.get_picture }}" alt="{{ staff.username }}'s image"></td>
                           {% if request.user.is_superuser %}
                           <td>

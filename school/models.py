@@ -57,6 +57,18 @@ class_attendance = (
     ('Absent','Absent'),
 )
 
+PARENT_CHILD_RELATION = (
+    ("Father", "Father"),
+    ("Mother", "Mother"),
+    ("Brother", "Brother"),
+    ("Sister", "Sister"),
+    ("Uncle", "Uncle"),
+    ("Aunty", "Aunty"),
+    ("Cousin", "Cousin"),
+    ("Grand-Parent", "Grand-Parent"),
+    ("Other", "Other"),
+)
+
 class PasswordConfigurations(models.Model):
     user_type = models.CharField('User Type', help_text='e.g Student', max_length=200, default='All Users')
     number_of_days_to_expire = models.IntegerField('Days', default=30)
@@ -221,7 +233,7 @@ class Student(models.Model):
 
 class Parent(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    #student = models.ForeignKey(Student, on_delete=models.CASCADE)
     occupation = models.CharField('Occupation', max_length=200, null=True, blank=True)
     nationality = models.CharField('Nationality', max_length=200, null=True, blank=True)
 
@@ -237,6 +249,18 @@ class Parent(models.Model):
     #         user.is_parent = True
     #         user.save()
 
+
+class Children(models.Model):
+    parent = models.ForeignKey(Parent, on_delete=models.CASCADE)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    relation = models.CharField('Relation', max_length=200, choices=PARENT_CHILD_RELATION)
+
+    def __str__(self):
+        return self.parent.user.get_full_name() + ' - ' + self.student.user.get_full_name()
+
+    class Meta:
+        verbose_name_plural = 'Children'
+        verbose_name = 'Child'
 
 
 class TakenCourse(models.Model):

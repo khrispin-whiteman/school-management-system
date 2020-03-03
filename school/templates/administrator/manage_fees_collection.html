@@ -36,22 +36,21 @@
                 <a href="{% url 'collect_fees' %}" class="btn btn-default btn-rounded mb-4">
                     PAY TUITION
                 </a>
-                <a class="pull-right btn btn-default btn-rounded mb-3" href="{% url 'payments_list_report' %}" class="btn btn-default btn-rounded mb-4">
-                    <i class="fa fa-file-pdf-o" aria-hidden="true"></i> PDF
-                </a>
+                {#                <a class="pull-right btn btn-default btn-rounded mb-3" href="{% url 'payments_list_report' %}" class="btn btn-default btn-rounded mb-4">#}
+                {#                    <i class="fa fa-file-pdf-o" aria-hidden="true"></i> PDF#}
+                {#                </a>#}
             </h6>
         {% endif %}
 
         <!--Card content-->
         <div class="table-wrapper-scroll-y">
 
-            <table class="table table-bordered table-striped">
+            <table id="table_feecollection_list" class="table table-bordered table-striped">
                 <thead>
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Firstname</th>
-                    <th scope="col">Lastname</th>
-                    <th scope="col">Academic Term</th>
+                    <th scope="col">Full Name</th>
+                    <th scope="col">Term</th>
                     <th scope="col">Fees Structure</th>
                     <th scope="col">Pay Status</th>
                     <th scope="col">Paid On</th>
@@ -63,12 +62,12 @@
                     {% endif %}
                 </tr>
                 </thead>
+                <tbody>
                 {% for fee in fees reversed %}
-                    <tbody>
+
                     <tr>
                         <th scope="row">{{ forloop.counter }}</th>
-                        <td>{{ fee.student.user.first_name }}</td>
-                        <td>{{ fee.student.user.last_name }}</td>
+                        <td>{{ fee.student.user.get_full_name }}</td>
                         <td>{{ fee.semester.semester }}</td>
                         <td>{{ fee.gradefees.fee }}</td>
                         <td>{{ fee.paystatus }}</td>
@@ -78,15 +77,15 @@
                         <td>{{ fee.balance }}</td>
                         {% if request.user.is_superuser %}
                             <td>
-                                <a data-toggle="tooltip" title="View" class="blue-text"><i class="fa fa-user"></i></a>
-                                <a data-toggle="tooltip" title="Edit" href="#" title="edit" class="teal-text"><i
-                                        class="fa fa-pencil"></i></a>
-                                <a data-toggle="tooltip" title="Delete" href="#" class="red-text"><i
-                                        class="fa fa-times"></i></a>
+{#                                <a data-toggle="tooltip" title="View" class="blue-text btn btn-sm btn-primary btn-outline-dark-green">VIEW</a>#}
+
+                                <a data-toggle="tooltip" title="Edit" href="#" title="edit" class="teal-text btn btn-primary btn-outline-brown btn-sm">
+                                    EDIT</a>
+                                <a data-toggle="tooltip" title="Delete" href="#" class="red-text btn btn-sm btn-primary btn-outline-red">DELETE</a>
                             </td>
                         {% endif %}
                     </tr>
-                    {% empty %}
+                {% empty %}
                     <tr>
                         <td></td>
                         <td></td>
@@ -103,8 +102,9 @@
                         <td></td>
                         <td></td>
                     </tr>
-                    </tbody>
+
                 {% endfor %}
+                </tbody>
             </table>
         </div>
     </div>

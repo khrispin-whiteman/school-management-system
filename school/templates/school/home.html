@@ -1,6 +1,6 @@
 {% extends 'school/base.html' %}
 {% load humanize %}
-{% block title %} Dashboard | A-SMS {% endblock title %}
+{% block title %} Dashboard{% endblock title %}
 
 {% block js %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"
@@ -180,7 +180,7 @@
 
             <!--Card-->
             <div class="card">
-                <a href="{% if not request.user.is_student %}{% url 'staff_list' %}{% else %} # {% endif %}">
+                <a href="{% if not request.user.is_student %}{% url 'parent_list' %}{% else %} # {% endif %}">
                     <!-- Card header -->
                     <div class="card-header waves-effect">Parents{{ no_of_parents|pluralize }}</div>
 
@@ -281,30 +281,30 @@
             <!--/.Card-->
 
         </div>
-        <div class="col-lg-4 col-md-12 mb-4">
-
-            <!--Card-->
-
-            <div class="card">
-                <a href="{% if not request.user.is_student %}{% url 'first_class_list' %}{% else %} # {% endif %}">
-                    <!-- Card header -->
-                    <div class="card-header waves-effect">1st Class
-                        Student{{ no_of_1st_class_students|pluralize }}</div>
-
-                    <!--Card content-->
-                    <div data-toggle="tooltip"
-                         title="{{ no_of_1st_class_students|apnumber }} first class student{{ no_of_1st_class_students|pluralize }}"
-                         class="card-body waves-effect">
-
-                        <span class="badge badge-info">{{ no_of_1st_class_students|apnumber }} ({{ no_of_1st_class_students }})</span>
-
-                    </div>
-                </a>
-
-            </div>
-
-            <!--/.Card-->
-
-        </div>
+{#        <div class="col-lg-4 col-md-12 mb-4">#}
+{##}
+{#            <!--Card-->#}
+{##}
+{#            <div class="card">#}
+{#                <a href="{% if not request.user.is_student %}{% url 'first_class_list' %}{% else %} # {% endif %}">#}
+{#                    <!-- Card header -->#}
+{#                    <div class="card-header waves-effect">1st Class#}
+{#                        Student{{ no_of_1st_class_students|pluralize }}</div>#}
+{##}
+{#                    <!--Card content-->#}
+{#                    <div data-toggle="tooltip"#}
+{#                         title="{{ no_of_1st_class_students|apnumber }} first class student{{ no_of_1st_class_students|pluralize }}"#}
+{#                         class="card-body waves-effect">#}
+{##}
+{#                        <span class="badge badge-info">{{ no_of_1st_class_students|apnumber }} ({{ no_of_1st_class_students }})</span>#}
+{##}
+{#                    </div>#}
+{#                </a>#}
+{##}
+{#            </div>#}
+{##}
+{#            <!--/.Card-->#}
+{##}
+{#        </div>#}
     </div>
 {% endblock %} }

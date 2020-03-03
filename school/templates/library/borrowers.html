@@ -1,6 +1,6 @@
 {% extends 'school/base.html' %}
 
-{% block title %} Borrowers lists | ARMS {% endblock title %}
+{% block title %} Borrowers lists | A-SMS {% endblock title %}
 
 {% block side_bar %}
     {% include 'school/partial_active_element.html' with active='borrowers' %}
@@ -30,23 +30,23 @@
             </div>
 
         </div>
-        {% if request.user.is_superuser %}
+        {% if request.user.is_librarian or request.user.is_superuser %}
             <!-- Heading -->
             <h6 class="mb-2 mb-sm-0 pt-1">
-                <a href="{% url 'add_new_librarian' %}" class="btn btn-default btn-rounded mb-4">
-                    Add New {{ user_type }}
+                <a href="{% url 'IssueBookView' %}" class="btn btn-default btn-rounded mb-4">
+                    Add New Borrower
                 </a>
-                <a class="pull-right btn btn-default btn-rounded mb-3" href="#"
-                   class="btn btn-default btn-rounded mb-4">
-                    <i class="fa fa-file-pdf-o" aria-hidden="true"></i> PDF
-                </a>
+                {#                <a class="pull-right btn btn-default btn-rounded mb-3" href="#"#}
+                {#                   class="btn btn-default btn-rounded mb-4">#}
+                {#                    <i class="fa fa-file-pdf-o" aria-hidden="true"></i> PDF#}
+                {#                </a>#}
             </h6>
         {% endif %}
 
         <!--Card content-->
         <div class="table-wrapper-scroll-y">
 
-            <table class="table table-bordered table-striped">
+            <table id="table_borrowers_list" class="table table-bordered table-striped">
                 <thead>
                 <tr>
                     <th scope="col">#</th>
@@ -57,13 +57,14 @@
                     <th scope="col">Return Date</th>
                     <th scope="col">Returned</th>
                     <th scope="col">View</th>
-                    {% if request.user.is_librarian %}
+                    {% if request.user.is_librarian or is_superuser %}
                         <th scope="col" style="color: green">Return Book</th>
                     {% endif %}
                 </tr>
                 </thead>
+                <tbody>
                 {% for borrower in borrowers_list reversed %}
-                    <tbody>
+
                     <tr>
                         <th scope="row">{{ forloop.counter }}</th>
                         <td>{% if borrower.student.user.get_full_name %}
@@ -98,20 +99,19 @@
                             </td>
                         {% endif %}
                     </tr>
-                    </tbody>
                 {% empty %}
-                    <tbody>
                     <tr>
                         <th></th>
                         <td></td>
                         <td></td>
-                        <td><i>No librarian Added</i></td>
+                        <td><i>No Borrowers found</i></td>
                         <td></td>
                         <td></td>
                         <td></td>
                     </tr>
-                    </tbody>
+
                 {% endfor %}
+                </tbody>
             </table>
         </div>
     </div>

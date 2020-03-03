@@ -121,14 +121,14 @@
     {% endif %}
 
     {% if request.user.is_librarian %}
-        <a href="#" class="list-group-item
+        <a href="{% url 'book_language_list' %}" class="list-group-item
         {% if active == 'book_language' %} active {% endif %} waves-effect">
             <i class="fa  fa-gear mr-3" aria-hidden="true"></i>Book Languages</a>
     {% endif %}
 
 
     {% if request.user.is_librarian %}
-        <a href="#" class="list-group-item
+        <a href="{% url 'book_genre_list' %}" class="list-group-item
         {% if active == 'book_genre' %} active {% endif %} waves-effect">
             <i class="fa  fa-gear mr-3" aria-hidden="true"></i>Book Genres</a>
     {% endif %}
@@ -144,7 +144,7 @@
     {% if request.user.is_student or request.user.is_parent %}
         <a href="{% url 'pay_history' %}" class="list-group-item
         {% if active == 'payment' %} active {% endif %} waves-effect">
-            <i class="fa  fa-cc-mastercard mr-3" aria-hidden="true"></i>Pay Departmental</a>
+            <i class="fa  fa-cc-mastercard mr-3" aria-hidden="true"></i>Pay Records</a>
     {% endif %}
 
     {% if request.user.is_student or request.user.is_parent %}
@@ -152,7 +152,6 @@
         {% if active == 'student_attendance' %} active {% endif %} waves-effect">
             <i class="fa  fa-book mr-3" aria-hidden="true"></i>Student Attendance</a>
     {% endif %}
-
 
     {% if request.user.is_superuser %}
         <a href="{% url 'librarian_list' %}" class="list-group-item
@@ -162,10 +161,9 @@
 
     {% if request.user.is_student or request.user.is_parent %}
         <a href="#" class="list-group-item
-        {% if active == 'payment' %} active {% endif %} waves-effect">
+        {% if active == 'library' %} active {% endif %} waves-effect">
             <i class="fa  fa-book mr-3" aria-hidden="true"></i>Library Record</a>
     {% endif %}
-
 
     {% if request.user.is_superuser %}
         <a href="{% url 'parent_list' %}" class="list-group-item
@@ -173,13 +171,11 @@
             <i class="fa  fa-user mr-3" aria-hidden="true"></i>Parents</a>
     {% endif %}
 
-
     {% if request.user.is_superuser %}
         <a href="{% url 'manage_session' %}" class="list-group-item
         {% if active == 'manage_session' %} active {% endif %} waves-effect">
             <i class="fa  fa-cogs mr-3" aria-hidden="true"></i>Session Setting</a>
     {% endif %}
-
 
     {% if request.user.is_superuser %}
         <a href="{% url 'manage_semester' %}" class="list-group-item

@@ -1,6 +1,6 @@
 {% extends 'school/base.html' %}
 {% load humanize %}
-{% block title %} Child Allocation | ARMS {% endblock %}
+{% block title %} Child Allocation | A-SMS {% endblock %}
 
 {% block side_bar %}
     {% include 'school/partial_active_element.html' with active='manage_parent' %}
@@ -44,23 +44,23 @@
                         <div class="card-body">
                             <ul class="list-group">
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    ID:
-                                    <small><input disabled id="parent" name="parent" class="form-control" type="text"
-                                                  value="{{ pk }}"></small>
-                                    {{ form.user }}
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    {{ form.occupation.label }}:
-                                    <small>{{ form.occupation }}</small>
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    {{ form.nationality.label }}:
-                                    <small>{{ form.nationality }}</small>
+{#                                    ID:#}
+{#                                    <small>#}
+{#                                        <input disabled id="parent" name="parent" class="form-control" type="text"#}
+{#                                                  value="{{ pk }}">#}
+{#                                    </small>#}
+                                    {{ form.parent }}
                                 </li>
 
+
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    Students:
                                     {{ form.student }}
+                                </li>
+
+
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    Choose Relation:
+                                    {{ form.relation }}
                                 </li>
 
 
@@ -82,7 +82,7 @@
                             <span class="badge badge-primary badge-pillt">
             <a href="#" class="text-white"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> PDF</a>
           </span>
-                            <span class="badge badge-primary badge-pill pull-right">All students{{ form.courses|length|pluralize }}:{{ form.courses|length }}
+                            <span class="badge badge-primary badge-pill pull-right">All students{{ form.student|length|pluralize }}:{{ form.student|length }}
           </span>
                         </div>
                     </div>

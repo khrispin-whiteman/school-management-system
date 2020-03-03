@@ -1,6 +1,6 @@
 {% extends 'school/base.html' %}
 
-{% block title %} Student lists | A-SMS {% endblock title %}
+{% block title %} Students list | A-SMS {% endblock title %}
 
 {% block side_bar %}
     {% include 'school/partial_active_element.html' with active='students' %}
@@ -55,14 +55,15 @@
         <!--Card content-->
         <div class="table-wrapper-scroll-y">
 
-            <table {% if request.user.is_superuser %} id="table_students_list" {% else %}{% endif %}
+            <table
+{#                    {% if request.user.is_superuser or request.user.is_lecturer %} #}
+                        id="table_students_list"
+{#                    {% else %}{% endif %}#}
                    class="table table-bordered table-striped">
                 <thead>
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">ID Number</th>
-                    <th scope="col">Firstname</th>
-                    <th scope="col">Lastname</th>
+                    <th scope="col">Full Name</th>
                     <th scope="col">Grade</th>
                     <th scope="col">Picture</th>
                 <th scope="col">Action</th>
@@ -76,20 +77,18 @@
 
                     <tr>
                         <th scope="row">{{ forloop.counter }}</th>
-                        <td>{{ student.id_number }}</td>
-                        <td>{{ student.user.first_name }}</td>
-                        <td>{{ student.user.last_name }}</td>
+                        <td>{{ student.user.get_full_name }}</td>
                         <td>{{ student.level }}</td>
                         <td><img width="30" src="{{ student.user.get_picture }}" alt="{{ staff.username }}'s image">
                         </td>
                         {% if request.user.is_superuser %}
                             <td>
                                 <a href="{% url 'student_details' student.id %}" data-toggle="tooltip" title="View"
-                                   class="blue-text"><i class="fa fa-user"></i></a>
+                                   class="blue-text btn btn-sm btn-primary btn-outline-dark-green">VIEW</a>
                                 <a data-toggle="tooltip" title="Edit" href="{% url 'edit_student' pk=student.pk %}"
-                                   title="edit" class="teal-text"><i class="fa fa-pencil"></i></a>
+                                   title="edit" class="teal-text btn btn-sm btn-primary btn-outline-brown">EDIT</a>
                                 <a data-toggle="tooltip" title="Delete" href="{% url 'delete_student' pk=student.pk %}"
-                                   class="red-text"><i class="fa fa-times"></i></a>
+                                   class="red-text btn btn-sm btn-primary btn-outline-red">DELETE</a>
                             </td>
                         {% endif %}
                     </tr>

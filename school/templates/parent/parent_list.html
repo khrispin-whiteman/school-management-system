@@ -1,102 +1,109 @@
 {% extends 'school/base.html' %}
 
-{% block title %} Parent lists | ARMS {% endblock title %}
+{% block title %} Parents list | A-SMS {% endblock title %}
 
 {% block side_bar %}
     {% include 'school/partial_active_element.html' with active='manage_parent' %}
 {% endblock %}
 {% block content %}
-<style type="text/css">
-  .table-wrapper-scroll-y {
-display: block;
-max-height: 350px;
-overflow-y: auto;
--ms-overflow-style: -ms-autohiding-scrollbar;
-}
-</style>
-	<div class="container-fluid mt-5">
+    <style type="text/css">
+        .table-wrapper-scroll-y {
+            display: block;
+            max-height: 350px;
+            overflow-y: auto;
+            -ms-overflow-style: -ms-autohiding-scrollbar;
+        }
+    </style>
+    <div class="container-fluid mt-5">
 
-            <!-- Heading -->
-            <div class="card mb-4 wow fadeIn">
+        <!-- Heading -->
+        <div class="card mb-4 wow fadeIn">
 
-                <!--Card content-->
-                <div class="card-body d-sm-flex justify-content-between">
+            <!--Card content-->
+            <div class="card-body d-sm-flex justify-content-between">
 
-                    <h6 class="mb-2 mb-sm-0 pt-1">
-                        <a href="/">Home Page</a>
-                        <span>/</span>
-                        <span>{{ user_type }}</span>
-                    </h6>
-                </div>
-
+                <h6 class="mb-2 mb-sm-0 pt-1">
+                    <a href="/">Home Page</a>
+                    <span>/</span>
+                    <span>{{ user_type }}</span>
+                </h6>
             </div>
-            {% if request.user.is_superuser %}
+
+        </div>
+        {% if request.user.is_superuser %}
             <!-- Heading -->
             <h6 class="mb-2 mb-sm-0 pt-1">
-            <a href="{% url 'add_new_parent' %}" class="btn btn-default btn-rounded mb-4">
-               Add New {{ user_type }}
-            </a>
-            <a class="pull-right btn btn-default btn-rounded mb-3" href="{% url 'staff_list_report' %}" class="btn btn-default btn-rounded mb-4">
-               <i class="fa fa-file-pdf-o" aria-hidden="true"></i> PDF
-            </a>
+                <a href="{% url 'add_new_parent' %}" class="btn btn-default btn-rounded mb-4">
+                    Add New {{ user_type }}
+                </a>
+{#                <a class="pull-right btn btn-default btn-rounded mb-3" href="{% url 'staff_list_report' %}"#}
+{#                   class="btn btn-default btn-rounded mb-4">#}
+{#                    <i class="fa fa-file-pdf-o" aria-hidden="true"></i> PDF#}
+{#                </a>#}
             </h6>
-            {% endif %}
+        {% endif %}
 
-                <!--Card content-->
-  <div class="table-wrapper-scroll-y">
+        <!--Card content-->
+        <div class="table-wrapper-scroll-y">
 
-  <table class="table table-bordered table-striped">
-                     <thead>
-                        <tr>
-                          <th scope="col">#</th>
-                          <th scope="col">Username</th>
-                          <th scope="col">Firstname</th>
-                          <th scope="col">Lastname</th>
-                          <th scope="col">Mobile</th>
-                          <th scope="col">Address</th>
-                          <th scope="col">Role</th>
-                          <th scope="col">Picture</th>
-                          {% if request.user.is_superuser %}
-                          <th scope="col">Action</th>
-                          {% endif %}
-                        </tr>
-                    </thead>
+            <table id="table_parent_list" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">Firstname</th>
+                    <th scope="col">Lastname</th>
+                    <th scope="col">Mobile</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Role</th>
+                    <th scope="col">Picture</th>
+                    {% if request.user.is_superuser %}
+                        <th scope="col">Action</th>
+                    {% endif %}
+                </tr>
+                </thead>
+                <tbody>
                 {% for parent in parents reversed %}
-                    <tbody>
-                        <tr>
-                          <th scope="row">{{ forloop.counter }}</th>
-                          <td>{% if parent.user.username %} {{ parent.username }} {% else %} N/A  {% endif %}</td>
-                          <td>{% if parent.first_name %} {{ parent.first_name }} {% else %} N/A  {% endif %}</td>
-                          <td>{% if parent.last_name %} {{ parent.last_name }} {% else %} N/A {% endif %}</td>
-                          <td>{% if parent.phone %} {{ parent.phone }} {% else %}
-                          <span class="red-text">N/A</span>{% endif %}</td>
-                          <td>{% if parent.address %} {{ parent.address }} {% else %} N/A {% endif %}</td>
-                          <td>{% if parent.is_superuser %} Superuser/Parent {% else %} Parent {% endif %}</td>
-                          <td><img class="img img-rounded" width="30" src="{{ parent.get_picture }}" alt="{{ parent.username }}'s image"></td>
-                          {% if request.user.is_superuser %}
-                          <td>
-                            <a data-toggle="tooltip" href="{% url 'parent_details' parent.id %}" title="view" class="blue-text"><i class="fa fa-user"></i></a>
-                            <a data-toggle="tooltip" href="#" title="edit" class="teal-text"><i class="fa fa-pencil"></i></a>
-                            <a data-toggle="tooltip" href="#" title="delete" class="red-text"><i class="fa fa-times"></i></a>
-                          </td>
-                          {% endif %}
-                        </tr>
-                    </tbody>
-                    {% empty %}
-                      <tbody>
-                        <tr>
-                          <th></th>
-                          <td></td>
-                          <td></td>
-                          <td><i>No parent Added</i></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                        </tr>
-                    </tbody>
+
+                    <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td>{% if parent.user.username %} {{ parent.username }} {% else %} N/A  {% endif %}</td>
+                        <td>{% if parent.first_name %} {{ parent.first_name }} {% else %} N/A  {% endif %}</td>
+                        <td>{% if parent.last_name %} {{ parent.last_name }} {% else %} N/A {% endif %}</td>
+                        <td>{% if parent.phone %} {{ parent.phone }} {% else %}
+                            <span class="red-text">N/A</span>{% endif %}</td>
+                        <td>{% if parent.address %} {{ parent.address }} {% else %} N/A {% endif %}</td>
+                        <td>{% if parent.is_superuser %} Superuser/Parent {% else %} Parent {% endif %}</td>
+                        <td><img class="img img-rounded" width="30" src="{{ parent.get_picture }}"
+                                 alt="{{ parent.username }}'s image"></td>
+                        {% if request.user.is_superuser %}
+                            <td>
+                                <a data-toggle="tooltip" href="{% url 'parent_details' parent.id %}" title="view"
+                                   class="blue-text"><i class="fa fa-user"></i></a>
+                                <a data-toggle="tooltip" href="{% url 'edit_parent' parent.id %}" title="edit" class="teal-text"><i
+                                        class="fa fa-pencil"></i></a>
+                                <a data-toggle="tooltip" href="{% url 'delete_parent' parent.id %}" title="delete" class="red-text"><i
+                                        class="fa fa-times"></i></a>
+                            </td>
+                        {% endif %}
+                    </tr>
+
+                {% empty %}
+
+                    <tr>
+                        <th></th>
+                        <td></td>
+                        <td></td>
+                        <td><i>No parent Added</i></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
                 {% endfor %}
-                 </table>
-            </div>
+                </tbody>
+            </table>
         </div>
-        <br>
+    </div>
+    <br>
 {% endblock %}

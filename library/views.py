@@ -7,9 +7,10 @@ import re
 from django.db.models import Q
 from django.utils.decorators import method_decorator
 from django.views.generic import CreateView
-from library.forms import IssueBookForm, BookAddForm, LibrarianAddForm, BookForm
-from library.models import Book, Reviews, Borrower, Genre
+from library.forms import IssueBookForm, BookAddForm, LibrarianAddForm, BookForm, GenreForm, LanguageForm
+from library.models import Book, Reviews, Borrower, Genre, Language
 from school.decorators import librarian_required, lecturer_required, student_required
+from school.forms import ProfileForm
 from school.models import Student, User
 
 
@@ -23,19 +24,6 @@ def librarian_list(request):
         "user_type": user_type,
     }
     return render(request, 'library/librarians_list.html', context)
-
-
-@login_required
-def BookCreate(request):
-    if not request.user.is_librarian:
-        return redirect('BookListView')
-    form = BookForm()
-    if request.method == 'POST':
-        form = BookForm(data=request.POST, files=request.FILES)
-        if form.is_valid():
-            form.save()
-            return redirect('BookListView')
-    return render(request, 'library/add_book.html', locals())
 
 
 @method_decorator([login_required, lecturer_required], name='dispatch')
@@ -53,21 +41,59 @@ class LibrarianAddView(CreateView):
         return redirect('librarian_list')
 
 
-# @method_decorator([login_required, librarian_required], name='dispatch')
-# class AddBookView(CreateView):
-#     model = Book
-#     form_class = BookAddForm
-#     template_name = 'library/add_book.html'
-#
-#     def get_context_data(self, **kwargs):
-#         kwargs['user_type'] = 'book'
-#         return super().get_context_data(**kwargs)
-#
-#     def form_valid(self, form):
-#         form.save()
-#         return redirect('BookListView')
+@login_required
+def edit_librarian(request, pk):
+    user = get_object_or_404(User, pk=pk, is_librarian=True)
+
+    if request.method == 'POST':
+        form = ProfileForm(request.POST)
+        if form.is_valid():
+            user.first_name = form.cleaned_data.get('first_name')
+            user.last_name = form.cleaned_data.get('last_name')
+            user.email = form.cleaned_data.get('email')
+            user.phone = form.cleaned_data.get('phone')
+            user.address = form.cleaned_data.get('address')
+            if request.FILES:
+                user.picture = request.FILES['picture']
+            user.save()
+            messages.success(request, 'Profile was successfully edited.')
+            return redirect(librarian_list)
+    else:
+        form = ProfileForm(instance=user, initial={
+            'firstname': user.first_name,
+            'lastname': user.last_name,
+            'email': user.email,
+            'phone': user.phone,
+            'picture': user.picture,
+        })
+
+    return render(request, 'account/edit_librarian_admin.html',
+                  {
+                      'form': form,
+                      'librarian_id': pk,
+                  })
 
 
+@login_required
+def delete_librarian(request, pk):
+    if not request.user.is_superuser:
+        return redirect(librarian_list)
+    obj = get_object_or_404(User, pk=pk, is_librarian=True)
+    obj.delete()
+    return redirect(librarian_list)
+
+
+@login_required
+def BookCreate(request):
+    if not request.user.is_librarian:
+        return redirect('BookListView')
+    form = BookForm()
+    if request.method == 'POST':
+        form = BookForm(data=request.POST, files=request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('BookListView')
+    return render(request, 'library/add_book.html', locals())
 
 
 @login_required
@@ -120,6 +146,62 @@ def book_borrowers(request):
                   {
                       'borrowers_list': borrowers_list,
                   })
+
+
+@login_required
+def book_genre_list(request):
+    """ Show list of all sessions """
+    genres = Genre.objects.all().order_by('-name')
+    return render(request, 'library/book_genre_list.html', {"genres": genres, })
+
+
+@login_required
+def add_book_genre(request):
+    """ check request method, if POST we add genre otherwise show empty form """
+    if request.method == 'POST':
+        form = GenreForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Genre added successfully ! ')
+            return redirect(book_genre_list)
+    else:
+        form = GenreForm()
+    return render(request, 'library/add_genre_form.html', {'form': form})
+
+
+@login_required
+def delete_book_genre(request, pk):
+    obj = get_object_or_404(Genre, pk=pk)
+    obj.delete()
+    return redirect(book_genre_list)
+
+
+@login_required
+def book_language_list(request):
+    """ Show list of all sessions """
+    languages = Language.objects.all().order_by('-name')
+    return render(request, 'library/book_language_list.html', {"languages": languages, })
+
+
+@login_required
+def add_book_language(request):
+    """ check request method, if POST we add genre otherwise show empty form """
+    if request.method == 'POST':
+        form = LanguageForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Language added successfully ! ')
+            return redirect(book_language_list)
+    else:
+        form = LanguageForm()
+    return render(request, 'library/add_book_language.html', {'form': form})
+
+
+@login_required
+def delete_book_language(request, pk):
+    obj = get_object_or_404(Language, pk=pk)
+    obj.delete()
+    return redirect(book_language_list)
 
 
 @login_required

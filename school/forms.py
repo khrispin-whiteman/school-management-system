@@ -6,6 +6,19 @@ from .models import *
 from django.forms import BaseModelFormSet
 
 
+PARENT_CHILD_RELATION = (
+    ("Father", "Father"),
+    ("Mother", "Mother"),
+    ("Brother", "Brother"),
+    ("Sister", "Sister"),
+    ("Uncle", "Uncle"),
+    ("Aunty", "Aunty"),
+    ("Cousin", "Cousin"),
+    ("Grand-Parent", "Grand-Parent"),
+    ("Other", "Other"),
+)
+
+
 class StaffAddForm(UserCreationForm):
     address = forms.CharField(
         max_length=30,
@@ -153,41 +166,32 @@ class ParentAddForm(UserCreationForm):
 
 
 class ParentChildrenAddForm(forms.ModelForm):
-    user = forms.ModelChoiceField(
-        queryset=User.objects.filter(is_parent=True),
+    parent = forms.ModelChoiceField(
+        queryset=Parent.objects.all(),
         widget=forms.Select(attrs={'class': 'browser-default custom-select'}),
         empty_label='Choose Parent',
     )
     student = forms.ModelChoiceField(
         queryset=Student.objects.filter().order_by('level'),
+        #queryset=User.objects.filter(is_student=True),
         widget=forms.Select(attrs={'class': 'browser-default custom-select'}),
         empty_label='Choose Student',
     )
 
-    occupation = forms.CharField(
-        max_length=200,
-        widget=forms.TextInput(
+    relation = forms.CharField(
+        widget=forms.Select(
+            choices=PARENT_CHILD_RELATION,
             attrs={
-                'type': 'text',
-                'class': 'form-control',
+                'class': 'browser-default custom-select',
             }
         ),
-        label="Occupation",
-    )
-    nationality = forms.CharField(
-        max_length=200,
-        widget=forms.TextInput(
-            attrs={
-                'type': 'text',
-                'class': 'form-control',
-            }
-        ),
-        label="Nationality",
+        label="semester",
     )
 
+
     class Meta:
-        model = Parent
-        fields = ['student', 'occupation', 'nationality', 'user']
+        model = Children
+        fields = ['student', 'parent', 'relation', ]
 
     # @transaction.atomic()
     # def save(self, commit=True,):

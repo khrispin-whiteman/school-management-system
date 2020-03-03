@@ -7,7 +7,8 @@ from django.contrib.auth.admin import UserAdmin
 from import_export.admin import ImportExportModelAdmin
 
 from school.models import Semester, Student, TakenCourse, CourseAllocation, Course, Session, PasswordConfigurations, \
-    Timetable, ExamTimeTable, Level, Fees, Result, User, SchoolFees, PupilAttendance, SchoolClass, Parent, SchoolDetails
+    Timetable, ExamTimeTable, Level, Fees, Result, User, SchoolFees, PupilAttendance, SchoolClass, Parent, \
+    SchoolDetails, Children
 
 
 class ScoreAdmin(ImportExportModelAdmin):
@@ -89,14 +90,30 @@ class PasswordConfigurationsAdmin(ImportExportModelAdmin):
     search_fields = ('user_type', 'number_of_days_to_expire')
 
 
-class ParentsAdmin(ImportExportModelAdmin):
-    list_display = ('user', 'student')
-    list_display_links = ()
+class StudentAdmin(ImportExportModelAdmin):
+    list_display = ('user', 'id_number', 'schoolclass', 'enrollment_date', 'level')
+    list_display_links = ('user', 'id_number', 'schoolclass', 'enrollment_date', 'level')
     list_per_page = 10
-    search_fields = ()
+    search_fields = ('user', 'id_number', 'schoolclass', 'enrollment_date', 'level')
+
+
+class ParentsAdmin(ImportExportModelAdmin):
+    list_display = ('user', 'occupation', 'nationality')
+    list_display_links = ('user', 'occupation', 'nationality')
+    list_per_page = 10
+    search_fields = ('user', 'occupation', 'nationality')
 
     # def get_students(self, obj):
     #     return ",".join([s.user.get_full_name() for s in obj.student.all()])
+
+
+class ChildrenAdmin(ImportExportModelAdmin):
+    list_display = ('parent', 'student', 'relation')
+    list_display_links = ('parent', 'student', 'relation')
+    search_fields = ('parent__user', 'student__user', 'relation')
+    autocomplete_fields = ('parent', 'student')
+    list_per_page = 10
+
 
 
 class LevelAdmin(ImportExportModelAdmin):
@@ -115,7 +132,7 @@ class SchoolDetailsAdmin(ImportExportModelAdmin):
 
 admin.site.register(SchoolDetails, SchoolDetailsAdmin)
 admin.site.register(Semester)
-admin.site.register(Student)
+admin.site.register(Student, StudentAdmin)
 admin.site.register(Course)
 admin.site.register(CourseAllocation, AllocationAdmin)
 admin.site.register(TakenCourse, ScoreAdmin)
@@ -131,3 +148,4 @@ admin.site.register(ExamTimeTable, ExamTimeTableAdmin)
 admin.site.register(Timetable, TimeTableAdmin)
 admin.site.register(PasswordConfigurations, PasswordConfigurationsAdmin)
 admin.site.register(Parent, ParentsAdmin)
+admin.site.register(Children, ChildrenAdmin)

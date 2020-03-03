@@ -190,14 +190,14 @@
                         columns: [1, 2, 3, 4]
                     }
                 },
-                {
-                    extend: 'pdf',
-                    footer: true,
-                    alignment: "center",
-                    exportOptions: {
-                        columns: [1, 2, 3, 4],
-                    }
-                },
+                {#{#}
+                {#    extend: 'pdf',#}
+                {#    footer: true,#}
+                {#    alignment: "center",#}
+                {#    exportOptions: {#}
+                {#        columns: [1, 2, 3, 4],#}
+                {#    }#}
+                {#},#}
                 {
                     extend: 'print',
                     footer: true,
@@ -208,23 +208,21 @@
                 },
 
             ],
-            {#columnDefs: [{#}
-            {#    targets: -1,#}
-            {#    visible: false#}
-            {#}]#}
+
         });
     });
+
     $(document).ready(function () {
         $('#table_students_list').DataTable({
             dom: 'Bfrtip',
-            {% if request.user.is_superuser %}
+{#            {% if request.user.is_superuser %}#}
                 buttons: [
                     {
                         extend: 'copy',
                         footer: true,
                         alignment: "center",
                         exportOptions: {
-                            columns: [1, 2, 3, 4]
+                            columns: [1, 2,]
                         }
                     },
                     {
@@ -232,7 +230,7 @@
                         footer: true,
                         alignment: "center",
                         exportOptions: {
-                            columns: [1, 2, 3, 4]
+                            columns: [1, 2,]
                         }
                     },
                     {
@@ -240,34 +238,32 @@
                         footer: true,
                         alignment: "center",
                         exportOptions: {
-                            columns: [1, 2, 3, 4]
+                            columns: [1, 2,]
                         }
                     },
-                    {
-                        extend: 'pdf',
-                        footer: true,
-                        alignment: "center",
-                        exportOptions: {
-                            columns: [1, 2, 3, 4],
-                        }
-                    },
+                    {#{#}
+                    {#    extend: 'pdf',#}
+                    {#    footer: true,#}
+                    {#    alignment: "center",#}
+                    {#    exportOptions: {#}
+                    {#        columns: [1, 2, 3, 4],#}
+                    {#    }#}
+                    {#},#}
                     {
                         extend: 'print',
                         footer: true,
                         exportOptions: {
                             alignment: "center",
-                            columns: [1, 2, 3, 4]
+                            columns: [1, 2,]
                         }
                     },
 
                 ],
-            {% endif %}
-            {#columnDefs: [{#}
-            {#    targets: -1,#}
-            {#    visible: false#}
-            {#}]#}
+{#            {% endif %}#}
+
         });
     });
+
     $(document).ready(function () {
         $('#table_students_results').DataTable({
             dom: 'Bfrtip',
@@ -296,14 +292,14 @@
                         columns: [1, 2, 3, 4]
                     }
                 },
-                {
-                    extend: 'pdf',
-                    footer: true,
-                    alignment: "center",
-                    exportOptions: {
-                        columns: [1, 2, 3, 4],
-                    }
-                },
+                {#{#}
+                {#    extend: 'pdf',#}
+                {#    footer: true,#}
+                {#    alignment: "center",#}
+                {#    exportOptions: {#}
+                {#        columns: [1, 2, 3, 4],#}
+                {#    }#}
+                {#},#}
                 {
                     extend: 'print',
                     footer: true,
@@ -314,12 +310,9 @@
                 },
 
             ],
-            {#columnDefs: [{#}
-            {#    targets: -1,#}
-            {#    visible: false#}
-            {#}]#}
         });
     });
+
     $(document).ready(function () {
         $('#table_courses_list').DataTable({
             dom: 'Bfrtip',
@@ -348,14 +341,14 @@
                         columns: [1, 2, 3, 4, 5]
                     }
                 },
-                {
-                    extend: 'pdf',
-                    footer: true,
-                    alignment: "center",
-                    exportOptions: {
-                        columns: [1, 2, 3, 4, 5]
-                    }
-                },
+                {#{#}
+                {#    extend: 'pdf',#}
+                {#    footer: true,#}
+                {#    alignment: "center",#}
+                {#    exportOptions: {#}
+                {#        columns: [1, 2, 3, 4, 5]#}
+                {#    }#}
+                {#},#}
                 {
                     extend: 'print',
                     footer: true,
@@ -366,12 +359,679 @@
                 },
 
             ],
-            {#columnDefs: [{#}
-            {#    targets: -1,#}
-            {#    visible: false#}
-            {#}]#}
         });
     });
+
+    $(document).ready(function () {
+        $('#table_class_list').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    extend: 'copy',
+                    footer: true,
+                    alignment: "center",
+                    exportOptions: {
+                        columns: [1, 2, 3,]
+                    }
+                },
+                {
+                    extend: 'csv',
+                    footer: true,
+                    alignment: "center",
+                    exportOptions: {
+                        columns: [1, 2, 3,]
+                    }
+                },
+                {
+                    extend: 'excel',
+                    footer: true,
+                    alignment: "center",
+                    exportOptions: {
+                        columns: [1, 2, 3,]
+                    }
+                },
+                {#{#}
+                {#    extend: 'pdf',#}
+                {#    footer: true,#}
+                {#    alignment: "center",#}
+                {#    exportOptions: {#}
+                {#        columns: [1, 2, 3,]#}
+                {#    }#}
+                {#},#}
+                {
+                    extend: 'print',
+                    footer: true,
+                    exportOptions: {
+                        alignment: "center",
+                        columns: [1, 2, 3,]
+                    }
+                },
+
+            ],
+        });
+    });
+
+     $(document).ready(function () {
+        $('#table_feestructure_list').DataTable({
+            dom: 'Bfrtip',
+            {% if request.user.is_superuser %}
+                buttons: [
+                    {
+                        extend: 'copy',
+                        footer: true,
+                        alignment: "center",
+                        exportOptions: {
+                            columns: [1, 2, 3, 4]
+                        }
+                    },
+                    {
+                        extend: 'csv',
+                        footer: true,
+                        alignment: "center",
+                        exportOptions: {
+                            columns: [1, 2, 3, 4]
+                        }
+                    },
+                    {
+                        extend: 'excel',
+                        footer: true,
+                        alignment: "center",
+                        exportOptions: {
+                            columns: [1, 2, 3, 4]
+                        }
+                    },
+                    {#{#}
+                    {#    extend: 'pdf',#}
+                    {#    footer: true,#}
+                    {#    alignment: "center",#}
+                    {#    exportOptions: {#}
+                    {#        columns: [1, 2, 3, 4],#}
+                    {#    }#}
+                    {#},#}
+                    {
+                        extend: 'print',
+                        footer: true,
+                        exportOptions: {
+                            alignment: "center",
+                            columns: [1, 2, 3, 4]
+                        }
+                    },
+
+                ],
+            {% endif %}
+
+        });
+    });
+
+    $(document).ready(function () {
+        $('#table_attendance_list').DataTable({
+            dom: 'Bfrtip',
+            {% if request.user.is_superuser %}
+                buttons: [
+                    {
+                        extend: 'copy',
+                        footer: true,
+                        alignment: "center",
+                        exportOptions: {
+                            columns: [1, 2, 3,]
+                        }
+                    },
+                    {
+                        extend: 'csv',
+                        footer: true,
+                        alignment: "center",
+                        exportOptions: {
+                            columns: [1, 2, 3,]
+                        }
+                    },
+                    {
+                        extend: 'excel',
+                        footer: true,
+                        alignment: "center",
+                        exportOptions: {
+                            columns: [1, 2, 3,]
+                        }
+                    },
+                    {#{#}
+                    {#    extend: 'pdf',#}
+                    {#    footer: true,#}
+                    {#    alignment: "center",#}
+                    {#    exportOptions: {#}
+                    {#        columns: [1, 2, 3,]#}
+                    {#    }#}
+                    {#},#}
+                    {
+                        extend: 'print',
+                        footer: true,
+                        exportOptions: {
+                            alignment: "center",
+                            columns: [1, 2, 3,]
+                        }
+                    },
+
+                ],
+            {% endif %}
+
+        });
+    });
+
+     $(document).ready(function () {
+        $('#table_feecollection_list').DataTable({
+            dom: 'Bfrtip',
+                buttons: [
+                    {
+                        extend: 'copy',
+                        footer: true,
+                        alignment: "center",
+                        exportOptions: {
+                            columns: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+                        }
+                    },
+                    {
+                        extend: 'csv',
+                        footer: true,
+                        alignment: "center",
+                        exportOptions: {
+                            columns: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+                        }
+                    },
+                    {
+                        extend: 'excel',
+                        footer: true,
+                        alignment: "center",
+                        exportOptions: {
+                            columns: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+                        }
+                    },
+                    {#{#}
+                    {#    extend: 'pdf',#}
+                    {#    footer: true,#}
+                    {#    alignment: "center",#}
+                    {#    exportOptions: {#}
+                    {#        columns: [1, 2, 3, 4, 5, 6, 7, 8, 9]#}
+                    {#    }#}
+                    {#},#}
+                    {
+                        extend: 'print',
+                        footer: true,
+                        exportOptions: {
+                            alignment: "center",
+                            columns: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+                        }
+                    },
+
+                ],
+        });
+
+        $('#table_feecollection_list').append('<caption style="caption-side: top"; h2> Payments Report</caption>')
+    });
+
+    $(document).ready(function () {
+        $('#table_feestructures_list').DataTable({
+            dom: 'Bfrtip',
+                buttons: [
+                    {
+                        extend: 'copy',
+                        footer: true,
+                        alignment: "center",
+                        exportOptions: {
+                            columns: [1, 2,]
+                        }
+                    },
+                    {
+                        extend: 'csv',
+                        footer: true,
+                        alignment: "center",
+                        exportOptions: {
+                            columns: [1, 2,]
+                        }
+                    },
+                    {
+                        extend: 'excel',
+                        footer: true,
+                        alignment: "center",
+                        exportOptions: {
+                            columns: [1, 2,]
+                        }
+                    },
+                    {#{#}
+                    {#    extend: 'pdf',#}
+                    {#    footer: true,#}
+                    {#    alignment: "center",#}
+                    {#    exportOptions: {#}
+                    {#        columns: [1, 2,]#}
+                    {#    }#}
+                    {#},#}
+                    {
+                        extend: 'print',
+                        footer: true,
+                        exportOptions: {
+                            alignment: "center",
+                            columns: [1, 2,]
+                        }
+                    },
+
+                ],
+        });
+    });
+
+
+    $(document).ready(function () {
+        $('#table_librarian_list').DataTable({
+            dom: 'Bfrtip',
+                buttons: [
+                    {
+                        extend: 'copy',
+                        footer: true,
+                        alignment: "center",
+                        exportOptions: {
+                            columns: [1, 2, 3, 4, 5, 6]
+                        }
+                    },
+                    {
+                        extend: 'csv',
+                        footer: true,
+                        alignment: "center",
+                        exportOptions: {
+                            columns: [1, 2, 3, 4, 5, 6]
+                        }
+                    },
+                    {
+                        extend: 'excel',
+                        footer: true,
+                        alignment: "center",
+                        exportOptions: {
+                            columns: [1, 2, 3, 4, 5, 6]
+                        }
+                    },
+                    {#{#}
+                    {#    extend: 'pdf',#}
+                    {#    footer: true,#}
+                    {#    alignment: "center",#}
+                    {#    exportOptions: {#}
+                    {#        columns: [1, 2, 3, 4, 5, 6]#}
+                    {#    }#}
+                    {#},#}
+                    {
+                        extend: 'print',
+                        footer: true,
+                        exportOptions: {
+                            alignment: "center",
+                            columns: [1, 2, 3, 4, 5, 6]
+                        }
+                    },
+
+                ],
+        });
+    });
+
+    $(document).ready(function () {
+        $('#table_parent_list').DataTable({
+            dom: 'Bfrtip',
+                buttons: [
+                    {
+                        extend: 'copy',
+                        footer: true,
+                        alignment: "center",
+                        exportOptions: {
+                            columns: [1, 2, 3, 4, 5, 6]
+                        }
+                    },
+                    {
+                        extend: 'csv',
+                        footer: true,
+                        alignment: "center",
+                        exportOptions: {
+                            columns: [1, 2, 3, 4, 5, 6]
+                        }
+                    },
+                    {
+                        extend: 'excel',
+                        footer: true,
+                        alignment: "center",
+                        exportOptions: {
+                            columns: [1, 2, 3, 4, 5, 6]
+                        }
+                    },
+                    {#{#}
+                    {#    extend: 'pdf',#}
+                    {#    footer: true,#}
+                    {#    alignment: "center",#}
+                    {#    exportOptions: {#}
+                    {#        columns: [1, 2, 3, 4, 5, 6]#}
+                    {#    }#}
+                    {#},#}
+                    {
+                        extend: 'print',
+                        footer: true,
+                        exportOptions: {
+                            alignment: "center",
+                            columns: [1, 2, 3, 4, 5, 6]
+                        }
+                    },
+
+                ],
+        });
+    });
+
+    $(document).ready(function () {
+        $('#table_sessions_list').DataTable({
+            dom: 'Bfrtip',
+                buttons: [
+                    {
+                        extend: 'copy',
+                        footer: true,
+                        alignment: "center",
+                        exportOptions: {
+                            columns: [1, 2,]
+                        }
+                    },
+                    {
+                        extend: 'csv',
+                        footer: true,
+                        alignment: "center",
+                        exportOptions: {
+                            columns: [1, 2,]
+                        }
+                    },
+                    {
+                        extend: 'excel',
+                        footer: true,
+                        alignment: "center",
+                        exportOptions: {
+                            columns: [1, 2,]
+                        }
+                    },
+                    {#{#}
+                    {#    extend: 'pdf',#}
+                    {#    footer: true,#}
+                    {#    alignment: "center",#}
+                    {#    exportOptions: {#}
+                    {#        columns: [1, 2,]#}
+                    {#    }#}
+                    {#},#}
+                    {
+                        extend: 'print',
+                        footer: true,
+                        exportOptions: {
+                            alignment: "center",
+                            columns: [1, 2,]
+                        }
+                    },
+
+                ],
+        });
+    });
+
+    $(document).ready(function () {
+        $('#table_semesters_list').DataTable({
+            dom: 'Bfrtip',
+                buttons: [
+                    {
+                        extend: 'copy',
+                        footer: true,
+                        alignment: "center",
+                        exportOptions: {
+                            columns: [1, 2, 3]
+                        }
+                    },
+                    {
+                        extend: 'csv',
+                        footer: true,
+                        alignment: "center",
+                        exportOptions: {
+                            columns: [1, 2, 3]
+                        }
+                    },
+                    {
+                        extend: 'excel',
+                        footer: true,
+                        alignment: "center",
+                        exportOptions: {
+                            columns: [1, 2, 3]
+                        }
+                    },
+                    {#{#}
+                    {#    extend: 'pdf',#}
+                    {#    footer: true,#}
+                    {#    alignment: "center",#}
+                    {#    exportOptions: {#}
+                    {#        columns: [1, 2, 3]#}
+                    {#    }#}
+                    {#},#}
+                    {
+                        extend: 'print',
+                        footer: true,
+                        exportOptions: {
+                            alignment: "center",
+                            columns: [1, 2, 3]
+                        }
+                    },
+
+                ],
+        });
+    });
+
+    $(document).ready(function () {
+        $('#table_book_genre_list').DataTable({
+            dom: 'Bfrtip',
+                buttons: [
+                    {
+                        extend: 'copy',
+                        footer: true,
+                        alignment: "center",
+                        exportOptions: {
+                            columns: [1,]
+                        }
+                    },
+                    {
+                        extend: 'csv',
+                        footer: true,
+                        alignment: "center",
+                        exportOptions: {
+                            columns: [1,]
+                        }
+                    },
+                    {
+                        extend: 'excel',
+                        footer: true,
+                        alignment: "center",
+                        exportOptions: {
+                            columns: [1,]
+                        }
+                    },
+                    {#{#}
+                    {#    extend: 'pdf',#}
+                    {#    footer: true,#}
+                    {#    alignment: "center",#}
+                    {#    exportOptions: {#}
+                    {#        columns: [1,]#}
+                    {#    }#}
+                    {#},#}
+                    {
+                        extend: 'print',
+                        footer: true,
+                        exportOptions: {
+                            alignment: "center",
+                            columns: [1,]
+                        }
+                    },
+
+                ],
+        });
+    });
+
+    $(document).ready(function () {
+        $('#table_book_language_list').DataTable({
+            dom: 'Bfrtip',
+                buttons: [
+                    {
+                        extend: 'copy',
+                        footer: true,
+                        alignment: "center",
+                        exportOptions: {
+                            columns: [1,]
+                        }
+                    },
+                    {
+                        extend: 'csv',
+                        footer: true,
+                        alignment: "center",
+                        exportOptions: {
+                            columns: [1,]
+                        }
+                    },
+                    {
+                        extend: 'excel',
+                        footer: true,
+                        alignment: "center",
+                        exportOptions: {
+                            columns: [1,]
+                        }
+                    },
+                    {#{#}
+                    {#    extend: 'pdf',#}
+                    {#    footer: true,#}
+                    {#    alignment: "center",#}
+                    {#    exportOptions: {#}
+                    {#        columns: [1,]#}
+                    {#    }#}
+                    {#},#}
+                    {
+                        extend: 'print',
+                        footer: true,
+                        exportOptions: {
+                            alignment: "center",
+                            columns: [1,]
+                        }
+                    },
+
+                ],
+        });
+    });
+
+    $(document).ready(function () {
+        $('#table_borrowers_list').DataTable({
+            dom: 'Bfrtip',
+                buttons: [
+                    {
+                        extend: 'copy',
+                        footer: true,
+                        alignment: "center",
+                        exportOptions: {
+                            columns: [1, 2, 3, 4, 5, 6]
+                        }
+                    },
+                    {
+                        extend: 'csv',
+                        footer: true,
+                        alignment: "center",
+                        exportOptions: {
+                            columns: [1, 2, 3, 4, 5, 6]
+                        }
+                    },
+                    {
+                        extend: 'excel',
+                        footer: true,
+                        alignment: "center",
+                        exportOptions: {
+                            columns: [1, 2, 3, 4, 5, 6]
+                        }
+                    },
+                    {#{#}
+                    {#    extend: 'pdf',#}
+                    {#    footer: true,#}
+                    {#    alignment: "center",#}
+                    {#    exportOptions: {#}
+                    {#        columns: [1, 2, 3, 4, 5, 6]#}
+                    {#    }#}
+                    {#},#}
+                    {
+                        extend: 'print',
+                        footer: true,
+                        exportOptions: {
+                            alignment: "center",
+                            columns: [1, 2, 3, 4, 5, 6]
+                        }
+                    },
+
+                ],
+        });
+    });
+
+         $(document).ready(function () {
+        $('#table_student_pay_history_list').DataTable({
+            dom: 'Bfrtip',
+                buttons: [
+                    {
+                        extend: 'copy',
+                        footer: true,
+                        alignment: "center",
+                        exportOptions: {
+                            columns: [1, 2, 3, 4, 5, 6, 7, 8,]
+                        }
+                    },
+                    {
+                        extend: 'csv',
+                        footer: true,
+                        alignment: "center",
+                        exportOptions: {
+                            columns: [1, 2, 3, 4, 5, 6, 7, 8,]
+                        }
+                    },
+                    {
+                        extend: 'excel',
+                        footer: true,
+                        alignment: "center",
+                        exportOptions: {
+                            columns: [1, 2, 3, 4, 5, 6, 7, 8,]
+                        }
+                    },
+                    {#{#}
+                    {#    extend: 'pdf',#}
+                    {#    footer: true,#}
+                    {#    alignment: "center",#}
+                    {#    exportOptions: {#}
+                    {#        columns: [1, 2, 3, 4, 5, 6, 7, 8,]#}
+                    {#    }#}
+                    {#},#}
+                    {
+                        extend: 'print',
+                        footer: true,
+                        exportOptions: {
+                            alignment: "center",
+                            columns: [1, 2, 3, 4, 5, 6, 7, 8,]
+                        }
+                    },
+
+                ],
+        });
+
+        {#$('#table_feecollection_list').append('<caption style="caption-side: top"; h2> Payments Report</caption>')#}
+    });
+    {#window.moment = require('moment');#}
+    {##}
+    {##}
+    {#$.fn.dataTable.ext.search.push(#}
+    {#    function (settings, data, dataIndex ) {#}
+    {#        var min = $('#min-date').val();#}
+    {#        var max = $('#max-date').val();#}
+    {#        var daysdate = data[2] || 0;#}
+    {##}
+    {#        if (#}
+    {#            (min == "" || max == "")#}
+    {#            ||#}
+    {#            (moment(daysdate).isSameOrAfter(min) && moment(daysdate).isSameOrbefore(max))#}
+    {#        ){#}
+    {#            return true;#}
+    {#        }#}
+    {#        return false;#}
+    {#    }#}
+    {#);#}
+    {##}
+    {#$('.date-range-filter').change(function () {#}
+    {#    table.draw();#}
+    {#});#}
 </script>
 
 

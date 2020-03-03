@@ -84,13 +84,13 @@
                         {% for student in students %}
                             <tr>
                                 <th scope="row">{{ forloop.counter }}</th>
-                                <td>{{ student.user.get_full_name }}</td>
-                                <td>{{ student.level }}</td>
-                                <td>{{ student.schoolclass.classteacher }}</td>
+                                <a href="{% url 'student_details' student.student.user.id %}"><td>{{ student.student.user.get_full_name }}</td></a>
+                                <td>{{ student.student.level }}</td>
+                                <a href=""><td>{{ student.student.schoolclass.classteacher }}</td></a>
                             </tr>
                             {% empty %}
                             <tr>
-                                <td>{{ course.courseCode }}</td>
+                                <td></td>
                                 <td></td>
                                 <td>No student is assigned!</td>
                                 <td></td>

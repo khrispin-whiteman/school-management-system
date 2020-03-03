@@ -36,17 +36,17 @@
                 <a href="{% url 'add_new_librarian' %}" class="btn btn-default btn-rounded mb-4">
                     Add New {{ user_type }}
                 </a>
-                <a class="pull-right btn btn-default btn-rounded mb-3" href="#"
-                   class="btn btn-default btn-rounded mb-4">
-                    <i class="fa fa-file-pdf-o" aria-hidden="true"></i> PDF
-                </a>
+                {#                <a class="pull-right btn btn-default btn-rounded mb-3" href="#"#}
+                {#                   class="btn btn-default btn-rounded mb-4">#}
+                {#                    <i class="fa fa-file-pdf-o" aria-hidden="true"></i> PDF#}
+                {#                </a>#}
             </h6>
         {% endif %}
 
         <!--Card content-->
         <div class="table-wrapper-scroll-y">
 
-            <table class="table table-bordered table-striped">
+            <table id="table_librarian_list" class="table table-bordered table-striped">
                 <thead>
                 <tr>
                     <th scope="col">#</th>
@@ -57,13 +57,14 @@
                     <th scope="col">Address</th>
                     <th scope="col">Role</th>
                     <th scope="col">Picture</th>
-{#                    {% if request.user.is_superuser %}#}
-{#                        <th scope="col">Action</th>#}
-{#                    {% endif %}#}
+                    {% if request.user.is_superuser %}
+                        <th scope="col">Action</th>
+                    {% endif %}
                 </tr>
                 </thead>
+                <tbody>
                 {% for librarian in librarian reversed %}
-                    <tbody>
+
                     <tr>
                         <th scope="row">{{ forloop.counter }}</th>
                         <td>{% if librarian.username %} {{ librarian.username }} {% else %} N/A  {% endif %}</td>
@@ -87,24 +88,22 @@
                         </td>
                         <td><img class="img img-rounded" width="30" src="{{ librarian.get_picture }}"
                                  alt="{{ librarian.username }}'s image"></td>
-{#                        {% if request.user.is_superuser %}#}
-{#                            <td>#}
-{#                                <a data-toggle="tooltip" title="view" class="blue-text"><i class="fa fa-user"></i></a>#}
-{#                                <a data-toggle="tooltip" href="{% url 'edit_staff' pk=librarian.pk %}" title="edit"#}
-{#                                   class="teal-text"><i class="fa fa-pencil"></i></a>#}
-{#                                <a data-toggle="tooltip" href="{% url 'delete_staff' pk=librarian.pk %}" title="delete"#}
-{#                                   class="red-text"><i class="fa fa-times"></i></a>#}
-{#                                <a data-toggle="tooltip" href="{% url 'make_staff_admin' librarian.pk %}" title="make admin"#}
-{#                                   class="green-text"><i class="fa fa-superpowers"></i></a>#}
-{#                                <a data-toggle="tooltip" href="{% url 'remove_staff_admin' librarian.pk %}"#}
-{#                                   title="remove admin" class="red-text"><i class="fa fa-superpowers"></i></a>#}
-{##}
-{#                            </td>#}
-{#                        {% endif %}#}
+                                                {% if request.user.is_superuser %}
+                                                    <td>
+                                                        <a data-toggle="tooltip" title="view" class="blue-text"><i class="fa fa-user"></i></a>
+                                                        <a data-toggle="tooltip" href="{% url 'edit_librarian' pk=librarian.pk %}" title="edit"
+                                                           class="teal-text"><i class="fa fa-pencil"></i></a>
+                                                        <a data-toggle="tooltip" href="{% url 'delete_librarian' librarian.pk %}" title="delete"
+                                                           class="red-text"><i class="fa fa-times"></i></a>
+                                                        <a data-toggle="tooltip" href="{% url 'make_staff_admin' librarian.pk %}" title="make admin"
+                                                           class="green-text"><i class="fa fa-superpowers"></i></a>
+                                                        <a data-toggle="tooltip" href="{% url 'remove_staff_admin' librarian.pk %}"
+                                                           title="remove admin" class="red-text"><i class="fa fa-superpowers"></i></a>
+
+                                                    </td>
+                                                {% endif %}
                     </tr>
-                    </tbody>
                 {% empty %}
-                    <tbody>
                     <tr>
                         <th></th>
                         <td></td>
@@ -114,8 +113,8 @@
                         <td></td>
                         <td></td>
                     </tr>
-                    </tbody>
                 {% endfor %}
+                </tbody>
             </table>
         </div>
     </div>
