@@ -1,6 +1,6 @@
 {% extends 'school/base.html' %}
 
-{% block title %} Results | ARMS {% endblock title %}
+{% block title %} {{ student.user.get_full_name }}'s Results {% endblock title %}
 
 {% block side_bar %}
     {% include 'school/partial_active_element.html' with active='view_results' %}

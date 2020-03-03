@@ -3,6 +3,8 @@
 {% block title %}
     {% if request.user.is_student %}
         {{ request.user.get_full_name }}'s Attendance
+        {% else %}
+        My Students
     {% endif %}
 
 {% endblock title %}
