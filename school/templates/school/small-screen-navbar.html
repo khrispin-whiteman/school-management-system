@@ -5,13 +5,20 @@
     <title>Title</title>
 </head>
 <body>
-<div class="collapse navbar-collapse scrollable-menu" id="collapsibleNavbar">
-    <ul class="navbar-nav mr-auto"></ul>
-    <ul class="navbar-nav nav-flex-icons">
+<div class="collapse navbar-collapse scrollable-menu fixed-top" id="collapsibleNavbar">
+    <ul class="navbar-nav" role="menu">
+        <a href="/" class="list-group-item waves-effect">
+            <i class="fa fa-pie-chart mr-3" aria-hidden="true"></i>
+            ------------
+        </a>
+        <a href="/" class="list-group-item waves-effect">
+            <i class="fa fa-pie-chart mr-3" aria-hidden="true"></i>
+            ------------
+        </a>
+
         <a href="/" class="list-group-item
         {% if active == 'Dashboard' %} active {% endif %} waves-effect">
-            <i class="fa fa-pie-chart mr-3" aria-hidden="true"></i>
-            Dashboard
+            <i class="fa fa-pie-chart mr-3" aria-hidden="true"></i>Dashboard
         </a>
 
         <a href="{% url 'profile' %}" class="list-group-item
