@@ -29,6 +29,20 @@
 
     <meta name="msapplication-TileColor" content="#2b5797">
     <meta name="theme-color" content="#ffffff">
+
+{% include 'school/small-screen-navbar.html'%}
+
+  <style>
+    .dropdown-menu {
+      width: 100%;
+    }
+
+    .scrollable-menu {
+      height: auto;
+      max-height: 400px;
+      overflow-x: hidden;
+    }
+  </style>
 </head>
 <body class="grey lighten-3">
 
@@ -43,11 +57,16 @@
             <a class="navbar-brand waves-effect" href="/">
                 <strong class="blue-text">School Management System</strong>
             </a>
+            <!-- Collapse -->
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar"
+                    aria-controls="collapsibleNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
             <!-- Collapse -->
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+                <span class="fa fa-angle-down"></span>
             </button>
 
             <!-- Links -->
