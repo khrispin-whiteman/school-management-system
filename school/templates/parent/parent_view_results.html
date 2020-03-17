@@ -42,7 +42,7 @@
     </div>
     <br>
 
-    <div class="col-md-8 col-lg-10" id="students_dv_form">
+    <div class=" col-md-8 col-lg-10 table-wrapper-scroll-y" id="students_dv_form">
         <b>END OF TERM RESULTS</b><br>
         <hr>
         {% regroup courses by semester as results_list %}
@@ -50,10 +50,10 @@
         <ul>
             {% for ex in results_list reversed %}
 
-                <div class="row">
+                <div class="row card-body justify-content-between">
                     <div class="table_view col-xs-12 "
                          style="background-color: darkgrey; border: 1px solid rgba(42,24,26,0.56); border-radius: 4px; padding: 10px;">
-                        <div class="table-responsive">
+                        <div class="">
                             <table id="table_students_results" class="table table-bordered" style="grid-template-columns: 1fr 1fr 1fr;">
                                 <br>
                                 <div class="inline-group">

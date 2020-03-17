@@ -39,7 +39,7 @@
 
     .scrollable-menu {
       height: auto;
-      max-height: 450px;
+      max-height: 550px;
       overflow-x: hidden;
     }
   </style>
@@ -153,10 +153,11 @@
     {% block content %} {% endblock %}
 </main>
 <!--Main layout-->
-<footer>
-    <a href="https://seal.beyondsecurity.com/vulnerability-scanner-verification/admi.vginfotec.xyz"><img
-            src="https://seal.beyondsecurity.com/verification-images/admi.vginfotec.xyz/vulnerability-scanner-2.gif"
-            alt="Website Security Test" border="0"></a>
+<footer class="" style="background-color: white">
+    <center>Automated School Management &copy;{% now 'Y' %} by <a href="www.necor.co.zm">Necor Zambia LTD.</a> </center>
+{#    <a href="https://seal.beyondsecurity.com/vulnerability-scanner-verification/admi.vginfotec.xyz"><img#}
+{#            src="https://seal.beyondsecurity.com/verification-images/admi.vginfotec.xyz/vulnerability-scanner-2.gif"#}
+{#            alt="Website Security Test" border="0"></a>#}
 </footer>
 
 <!-- SCRIPTS -->
@@ -179,7 +180,7 @@
 <script type="text/javascript" src="{% static 'school/js/tooltips.js' %}"></script>
 
 
-#button configs
+
 <script>
     $(document).ready(function () {
         $('#table_class_detail').DataTable({
@@ -311,14 +312,14 @@
                         columns: [1, 2, 3, 4]
                     }
                 },
-                {#{#}
-                {#    extend: 'pdf',#}
-                {#    footer: true,#}
-                {#    alignment: "center",#}
-                {#    exportOptions: {#}
-                {#        columns: [1, 2, 3, 4],#}
-                {#    }#}
-                {#},#}
+                {
+                    extend: 'pdf',
+                    footer: true,
+                    alignment: "center",
+                    exportOptions: {
+                        columns: [1, 2, 3, 4],
+                    }
+                },
                 {
                     extend: 'print',
                     footer: true,
