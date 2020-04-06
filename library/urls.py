@@ -24,5 +24,8 @@ urlpatterns = [
     path('library/languages/new/', views.add_book_language, name='add_book_language'),
     path('library/languages/delete/<int:pk>/', views.delete_book_language, name='delete_book_language'),
 
+    path('library/record', views.student_borrowed_books, name='student_borrowed_books'),
+    path('library/record/parentview/<int:pk>/', views.view_borrowed_books_by_parent, name='view_borrowed_books_by_parent'),
+
 
 ]

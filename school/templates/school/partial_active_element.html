@@ -160,7 +160,7 @@
     {% endif %}
 
     {% if request.user.is_student or request.user.is_parent %}
-        <a href="#" class="list-group-item
+        <a href="{% url 'student_borrowed_books' %}" class="list-group-item
         {% if active == 'library' %} active {% endif %} waves-effect">
             <i class="fa  fa-book mr-3" aria-hidden="true"></i>Library Record</a>
     {% endif %}

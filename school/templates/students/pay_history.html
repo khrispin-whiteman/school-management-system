@@ -45,8 +45,8 @@
         {% if request.user.is_parent %}
             <div class="list-group">
                 {% for stud in students %}
-                    <div class="list-group-item">
-                        <a href="{% url 'parent_payment_history_view' stud.id %}">
+                    <div class="list-group-item btn btn-block">
+                        <a href="{% url 'parent_payment_history_view' stud.id %}" class="pull-left">
                             {{ stud.student.user.get_full_name }}, Grade: {{ stud.student.level }}
                         </a>
                     </div>

@@ -1,6 +1,6 @@
 {% extends 'school/base.html' %}
 {% load static %}
-{% block title %} Score Entry | ARMS {% endblock title %}
+{% block title %} Score Entry | A-SMS {% endblock title %}
 
 {% block side_bar %}
     {% include 'school/partial_active_element.html' with active='Add_Score' %}
@@ -40,7 +40,7 @@
 		    <div class="col-md-5">
 		    	<button id="submit" data-toggle="tooltip" title="Save Score" type="submit" class="btn btn-primary w-25 p-3 float-left">Save</button>
 		    	<span data-toggle="tooltip" title="Allow editing" id="edit_btn" onclick="toggle_score_edit()" class="btn btn-default w-26 p-3 float-left">Edit</span>
-		    	<a class="white-text" target="_blank" href="{% url 'result_sheet_pdf_view' id=course.id %}">
+		    	<a class="white-text" target="_blank" href="">
 		    <span data-toggle="tooltip" title="Print Result sheet" class="btn btn-default w-26 p-3 float-left">
 		    		PDF
 		    	</span></a>

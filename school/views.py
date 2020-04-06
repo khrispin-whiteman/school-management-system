@@ -1261,8 +1261,8 @@ def add_score_for(request, id):
             obj.total = obj.get_total(ca=ca, exam=exam)
             obj.grade = obj.get_grade(ca=ca, exam=exam)
             obj.comment = obj.get_comment(obj.grade)
-            obj.carry_over(obj.grade)
-            obj.is_repeating()
+            #obj.carry_over(obj.grade)
+            #obj.is_repeating()
             obj.save()
             # gpa = obj.calculate_gpa(total_unit_in_semester)
             # cgpa = obj.calculate_cgpa()
@@ -1416,7 +1416,11 @@ def parent_attendance_view(request, pk):
 def view_result_by_parent(request, pk):
     student = Student.objects.get(id=pk)
     courses = TakenCourse.objects.filter(student__id=pk)
+
+    print("STUDENT ID: ", courses)
+
     result = Result.objects.filter(student__pk=pk)
+
 
     if courses.count() == 0:
         return HttpResponse("No Registered Courses!")
@@ -1512,3 +1516,6 @@ def timetable_by_day(request):
                   {
                       'timetables': timetables,
                   })
+
+
+#def add_course_to_class(request, pk):

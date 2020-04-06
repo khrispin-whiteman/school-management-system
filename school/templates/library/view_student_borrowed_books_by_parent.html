@@ -1,0 +1,93 @@
+{% extends 'school/base.html' %}
+
+{% block title %} Library | A-SMS {% endblock title %}
+
+{% block side_bar %}
+    {% include 'school/partial_active_element.html' with active='borrowers' %}
+{% endblock %}
+{% block content %}
+    <style type="text/css">
+        .table-wrapper-scroll-y {
+            display: block;
+            max-height: 350px;
+            overflow-y: auto;
+            -ms-overflow-style: -ms-autohiding-scrollbar;
+        }
+    </style>
+    <div class="container-fluid mt-5">
+
+        <!-- Heading -->
+        <div class="card mb-4 wow fadeIn">
+
+            <!--Card content-->
+            <div class="card-body d-sm-flex justify-content-between">
+
+                <h6 class="mb-2 mb-sm-0 pt-1">
+                    <a href="/">Home Page</a>
+                    <span>/</span>
+                    <span>{{ user_type }}</span>
+                </h6>
+            </div>
+
+        </div>
+
+        <!--Card content-->
+        <div class="table-wrapper-scroll-y">
+
+            <table id="table_borrowers_list" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Student</th>
+                    <th scope="col">Book</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Borrow Date</th>
+                    <th scope="col">Return Date</th>
+                    <th scope="col">Returned</th>
+                    <th scope="col">View</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for book in borrowed_books reversed %}
+
+                    <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td>{% if book.student.user.get_full_name %}
+                            {{ book.student.user.get_full_name }} {% else %} N/A  {% endif %}</td>
+                        <td>{% if book.book %} {{ book.book.title }} {% else %} N/A  {% endif %}</td>
+                        <td>{% if book.num_books_borrowed %} {{ book.num_books_borrowed }} {% else %}
+                            N/A {% endif %}</td>
+                        <td>{% if book.issue_date %} {{ book.issue_date }} {% else %}
+                            <span class="red-text">N/A</span>{% endif %}</td>
+                        <td>
+                            {% if book.return_date %}
+                                {{ book.return_date }}
+                            {% else %}
+                                N/A
+                            {% endif %}
+                        </td>
+                        <td>
+                            {{ book.returned }}
+                        </td>
+                        <td>
+                            <span class="fa fa-book"></span>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <th></th>
+                        <td></td>
+                        <td></td>
+                        <td><i>No Books found</i></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <br>
+{% endblock %}

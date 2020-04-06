@@ -181,7 +181,7 @@ class Level(models.Model):
 class Course(models.Model):
     courseTitle = models.CharField(max_length=200)
     courseCode = models.CharField(max_length=200, unique=True)
-    #courseUnit = models.CharField(max_length=200)
+    courseUnit = models.CharField(max_length=200)
     description = models.TextField(max_length=200, blank=True)
     level = models.ForeignKey(Level, verbose_name='Grade', default='', on_delete=models.CASCADE)
     semester = models.ForeignKey(Semester, on_delete=models.CASCADE)
@@ -215,6 +215,7 @@ class SchoolClass(models.Model):
     class Meta:
         verbose_name = 'School Class'
         verbose_name_plural = 'School Classes'
+
 
 
 class Student(models.Model):

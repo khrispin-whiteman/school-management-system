@@ -11,7 +11,7 @@ from library.forms import IssueBookForm, BookAddForm, LibrarianAddForm, BookForm
 from library.models import Book, Reviews, Borrower, Genre, Language
 from school.decorators import librarian_required, lecturer_required, student_required
 from school.forms import ProfileForm
-from school.models import Student, User
+from school.models import Student, User, Parent, Children
 
 
 @login_required
@@ -146,6 +146,34 @@ def book_borrowers(request):
                   {
                       'borrowers_list': borrowers_list,
                   })
+
+@login_required
+def student_borrowed_books(request):
+    if request.user.is_parent:
+        students = Children.objects.filter(parent__user__id=request.user.id)
+
+        context = {
+            'students': students,
+        }
+
+        return render(request, 'library/student_borrowed_books.html', context)
+
+    elif request.user.is_student:
+        borrowed_books = Borrower.objects.filter(student__user_id__exact=request.user.id)
+
+        context = {
+            "borrowed_books": borrowed_books,
+        }
+        return render(request, 'library/student_borrowed_books.html', context)
+
+def view_borrowed_books_by_parent(request, pk):
+    student = Student.objects.get(id=pk)
+    borrowed_books = Borrower.objects.filter(student__id=pk)
+
+    context = {
+        "borrowed_books": borrowed_books,
+    }
+    return render(request, 'library/view_student_borrowed_books_by_parent.html', context)
 
 
 @login_required

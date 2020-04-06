@@ -13,15 +13,24 @@ from school.models import Semester, Student, TakenCourse, CourseAllocation, Cour
 
 class ScoreAdmin(ImportExportModelAdmin):
     list_display = ['student', 'course', 'ca', 'exam', 'total', 'grade', 'comment', 'semester']
+    autocomplete_fields = ('student', 'course', 'semester')
 
 
 class AllocationAdmin(ImportExportModelAdmin):
-    list_display = ['lecturer', ]
+    list_display = ('lecturer', 'lecturer', 'session')
+    autocomplete_fields = ('lecturer', 'session')
 
 
 class ResultAdmin(ImportExportModelAdmin):
-    list_display = ['student', 'gpa', 'semester', 'level', 'cgpa']
+    list_display = ['student', 'course', 'gpa', 'semester', 'level', 'cgpa']
+    autocomplete_fields = ('student', 'course')
+    list_per_page = 10
+    search_fields = ('student', )
 
+class CourseAdmin(ImportExportModelAdmin):
+    list_per_page = 10
+    list_display = ('courseTitle', 'courseCode', 'description', 'level', 'semester')
+    search_fields = ('courseTitle', 'courseCode', 'level')
 
 class FeesAdmin(ImportExportModelAdmin):
     list_display = ('grade', 'fee')
@@ -32,6 +41,7 @@ class FeesAdmin(ImportExportModelAdmin):
 class TimeTableAdmin(ImportExportModelAdmin):
     list_display = ('course', 'day', 'start_time', 'end_time', 'venue', 'description')
     list_display_links = ('course', 'day', 'start_time', 'end_time', 'venue', 'description')
+    autocomplete_fields = ('course', )
     list_per_page = 10
     search_fields = ('course__courseTitle', 'day', 'start_time', 'end_time', 'venue', 'description')
 
@@ -58,6 +68,7 @@ class PupilAttendanceAdmin(ImportExportModelAdmin):
     list_per_page = 10
     search_fields = ('student__user__username', 'mark_attendance', 'daysdate', )
     date_hierarchy = 'daysdate'
+    autocomplete_fields = ('student', 'nameofclass')
 
 
 class SchoolClassDropDownFields(forms.ModelForm):
@@ -71,9 +82,10 @@ class SchoolClassDropDownFields(forms.ModelForm):
 class SchoolClassAdmin(ImportExportModelAdmin):
     form = SchoolClassDropDownFields
     list_display = ('grade', 'classname', 'classteacher')
-    list_display_links = ('grade', 'classname', 'classteacher')
+    #list_display_links = ('grade', 'classname', 'classteacher')
     list_per_page = 10
     search_fields = ('grade', 'classname', 'classteacher')
+    autocomplete_fields = ('classteacher', )
 
 
 class ExamTimeTableAdmin(ImportExportModelAdmin):
@@ -91,10 +103,11 @@ class PasswordConfigurationsAdmin(ImportExportModelAdmin):
 
 
 class StudentAdmin(ImportExportModelAdmin):
-    list_display = ('user', 'id_number', 'schoolclass', 'enrollment_date', 'level')
-    list_display_links = ('user', 'id_number', 'schoolclass', 'enrollment_date', 'level')
+    list_display = ('id', 'user', 'id_number', 'schoolclass', 'enrollment_date', 'level')
+    list_display_links = ('id', 'user', 'id_number', 'schoolclass', 'enrollment_date', 'level')
     list_per_page = 10
     search_fields = ('user', 'id_number', 'schoolclass', 'enrollment_date', 'level')
+    autocomplete_fields = ('user', 'schoolclass')
 
 
 class ParentsAdmin(ImportExportModelAdmin):
@@ -102,6 +115,7 @@ class ParentsAdmin(ImportExportModelAdmin):
     list_display_links = ('user', 'occupation', 'nationality')
     list_per_page = 10
     search_fields = ('user', 'occupation', 'nationality')
+    autocomplete_fields = ('user', )
 
     # def get_students(self, obj):
     #     return ",".join([s.user.get_full_name() for s in obj.student.all()])
@@ -130,13 +144,25 @@ class SchoolDetailsAdmin(ImportExportModelAdmin):
     search_fields = ('schoolname', 'address', 'email', 'phone', 'photo')
 
 
+class SemesterAdmin(ImportExportModelAdmin):
+    list_display = ('semester', 'session', 'is_current_semester', 'next_semester_begins')
+    search_fields = ('semester', 'session')
+    list_per_page = 10
+
+
+class SessionAdmin(ImportExportModelAdmin):
+    list_display = ('session', 'is_current_session', 'next_session_begins')
+    search_fields = ('session', )
+    list_per_page = 10
+
+
 admin.site.register(SchoolDetails, SchoolDetailsAdmin)
-admin.site.register(Semester)
+admin.site.register(Semester, SemesterAdmin)
 admin.site.register(Student, StudentAdmin)
-admin.site.register(Course)
+admin.site.register(Course, CourseAdmin)
 admin.site.register(CourseAllocation, AllocationAdmin)
 admin.site.register(TakenCourse, ScoreAdmin)
-admin.site.register(Session)
+admin.site.register(Session, SessionAdmin)
 admin.site.register(User, TheUserAdmin)
 admin.site.register(Result, ResultAdmin)
 admin.site.register(Fees, FeesAdmin)
