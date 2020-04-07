@@ -1,6 +1,11 @@
 {% extends 'school/base.html' %}
 
-{% block title %} Library | A-SMS {% endblock title %}
+{% block title %}
+    {% for book in borrowed_books %}
+        {{ book.student.user.get_full_name | capfirst }}
+    {% endfor %}
+    Library Records
+{% endblock title %}
 
 {% block side_bar %}
     {% include 'school/partial_active_element.html' with active='borrowers' %}
@@ -23,9 +28,11 @@
             <div class="card-body d-sm-flex justify-content-between">
 
                 <h6 class="mb-2 mb-sm-0 pt-1">
-                    <a href="/">Home Page</a>
+                    <a href="{% url 'student_borrowed_books' %}">My Students</a>
                     <span>/</span>
-                    <span>{{ user_type }}</span>
+                    {% for book in borrowed_books %}
+                        <span>{{ book.student.user.get_full_name | capfirst }}</span>
+                    {% endfor %}
                 </h6>
             </div>
 

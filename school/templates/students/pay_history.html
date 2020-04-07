@@ -75,7 +75,6 @@
                     </thead>
                     <tbody>
                     {% for fee in schoolfees %}
-
                         <tr>
                             <th scope="row">{{ forloop.counter }}</th>
                             <td>{{ fee.student.user.get_full_name }}</td>
@@ -93,9 +92,9 @@
                             <td></td>
                             <td></td>
                             <td>
-          <span class="text-center">
-              No Payment Records Found
-          </span>
+                              <span class="text-center">
+                                  No Payment Records Found
+                              </span>
                             </td>
                             <td></td>
                             <td></td>
@@ -107,8 +106,6 @@
                 </table>
             </div>
         {% endif %}
-
-
     </div>
     <br>
 {% endblock %}
