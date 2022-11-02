@@ -19,5 +19,5 @@ class Migration(migrations.Migration):
             name='courseUnit',
             field=models.CharField(default=0, max_length=200),
             preserve_default=False,
-        ),
+        ),0
     ]

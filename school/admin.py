@@ -1,11 +1,8 @@
 from django.contrib import admin
 from django import forms
-
-# Register your models here.
 from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin
 from import_export.admin import ImportExportModelAdmin
-
 from school.models import Semester, Student, TakenCourse, CourseAllocation, Course, Session, PasswordConfigurations, \
     Timetable, ExamTimeTable, Level, Fees, Result, User, SchoolFees, PupilAttendance, SchoolClass, Parent, \
     SchoolDetails, Children
@@ -27,10 +24,12 @@ class ResultAdmin(ImportExportModelAdmin):
     list_per_page = 10
     search_fields = ('student', )
 
+
 class CourseAdmin(ImportExportModelAdmin):
     list_per_page = 10
     list_display = ('courseTitle', 'courseCode', 'description', 'level', 'semester')
     search_fields = ('courseTitle', 'courseCode', 'level')
+
 
 class FeesAdmin(ImportExportModelAdmin):
     list_display = ('grade', 'fee')
@@ -38,12 +37,14 @@ class FeesAdmin(ImportExportModelAdmin):
     list_per_page = 10
     search_fields = ('grade', 'fee')
 
+
 class TimeTableAdmin(ImportExportModelAdmin):
     list_display = ('course', 'day', 'start_time', 'end_time', 'venue', 'description')
     list_display_links = ('course', 'day', 'start_time', 'end_time', 'venue', 'description')
     autocomplete_fields = ('course', )
     list_per_page = 10
     search_fields = ('course__courseTitle', 'day', 'start_time', 'end_time', 'venue', 'description')
+
 
 class TheUserAdmin(UserAdmin):
     list_display = ('id', 'first_name', 'last_name', 'phone', 'address', 'email', 'is_student', 'is_lecturer', 'is_librarian', 'is_parent', 'password_type', 'days_for_password_expiry', 'last_password_reset_date', 'password_expiry_date', 'is_password_expired')
@@ -78,6 +79,7 @@ class SchoolClassDropDownFields(forms.ModelForm):
     class Meta:
         model = SchoolClass
         exclude = ('created', )
+
 
 class SchoolClassAdmin(ImportExportModelAdmin):
     form = SchoolClassDropDownFields
@@ -127,7 +129,6 @@ class ChildrenAdmin(ImportExportModelAdmin):
     search_fields = ('parent__user', 'student__user', 'relation')
     autocomplete_fields = ('parent', 'student')
     list_per_page = 10
-
 
 
 class LevelAdmin(ImportExportModelAdmin):

@@ -148,6 +148,7 @@ class ParentAddForm(UserCreationForm):
         label="Email",
     )
 
+
     class Meta(UserCreationForm.Meta):
         model = User
 
