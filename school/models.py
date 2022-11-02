@@ -53,8 +53,8 @@ PASSWORD_TYPES = (
 )
 
 class_attendance = (
-    ('Present','Present'),
-    ('Absent','Absent'),
+    ('Present', 'Present'),
+    ('Absent', 'Absent'),
 )
 
 PARENT_CHILD_RELATION = (
@@ -68,6 +68,7 @@ PARENT_CHILD_RELATION = (
     ("Grand-Parent", "Grand-Parent"),
     ("Other", "Other"),
 )
+
 
 class PasswordConfigurations(models.Model):
     user_type = models.CharField('User Type', help_text='e.g Student', max_length=200, default='All Users')
@@ -87,12 +88,13 @@ class User(AbstractUser):
     address = models.CharField(max_length=60, blank=True, null=True)
     picture = models.ImageField(upload_to="users/pictures/%Y/%m/%d'", blank=True, null=True)
     email = models.EmailField(blank=True, null=True)
-    #password settings
+    # password settings
     password_type = models.CharField('Password Type', default='Expirable', max_length=200, choices=PASSWORD_TYPES)
-    days_for_password_expiry = models.ForeignKey(PasswordConfigurations, on_delete=models.CASCADE, null=True, blank=True)
+    days_for_password_expiry = models.ForeignKey(PasswordConfigurations, on_delete=models.CASCADE, null=True,
+                                                 blank=True)
     last_password_reset_date = models.DateField('Reset On', auto_now=True)
     password_expiry_date = models.DateField(editable=False, null=True, blank=True)
-    is_password_expired = models.BooleanField(default=False,)
+    is_password_expired = models.BooleanField(default=False, )
 
     username_validator = ASCIIUsernameValidator()
 
@@ -207,7 +209,7 @@ class SchoolClass(models.Model):
     classteacher = models.ForeignKey(User, verbose_name='Assign Teacher', max_length=200, default='',
                                      on_delete=models.CASCADE)
     courses = models.ManyToManyField(Course, verbose_name='Choose Courses', related_name='class_subject',
-                                      help_text='Hold Ctrl to choose multiple')
+                                     help_text='Hold Ctrl to choose multiple')
 
     def __str__(self):
         return 'Grade: ' + str(self.grade) + self.classname + ', Teacher: ' + str(self.classteacher)
@@ -215,7 +217,6 @@ class SchoolClass(models.Model):
     class Meta:
         verbose_name = 'School Class'
         verbose_name_plural = 'School Classes'
-
 
 
 class Student(models.Model):
@@ -234,7 +235,7 @@ class Student(models.Model):
 
 class Parent(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    #student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    # student = models.ForeignKey(Student, on_delete=models.CASCADE)
     occupation = models.CharField('Occupation', max_length=200, null=True, blank=True)
     nationality = models.CharField('Nationality', max_length=200, null=True, blank=True)
 
@@ -301,7 +302,6 @@ class TakenCourse(models.Model):
             comment = FAIL
         return comment
 
-
     def calculate_gpa(self, total_unit_in_semester):
         current_semester = Semester.objects.get(is_current_semester=True)
         student = TakenCourse.objects.filter(student=self.student, course__level=self.student.level,
@@ -362,7 +362,7 @@ class ExamTimeTable(models.Model):
     date = models.DateField()
     time = models.TimeField()
     venue = models.CharField(max_length=200, blank=True, null=True)
-    semester = models.ForeignKey(Semester,  on_delete=models.CASCADE)
+    semester = models.ForeignKey(Semester, on_delete=models.CASCADE)
     additional_info = models.TextField(max_length=1000, blank=True, null=True)
 
     def __str__(self):
@@ -510,7 +510,7 @@ class SchoolDetails(models.Model):
 class PupilAttendance(models.Model):
     nameofclass = models.ForeignKey(SchoolClass, verbose_name='Class', default='', on_delete=models.CASCADE)
     student = models.ForeignKey(Student, verbose_name='Student', default='', on_delete=models.CASCADE)
-    #course = models.ForeignKey(Course, verbose_name='Course', default='', on_delete=models.CASCADE)
+    # course = models.ForeignKey(Course, verbose_name='Course', default='', on_delete=models.CASCADE)
     mark_attendance = models.CharField(max_length=50, default='Present', choices=class_attendance)
     daysdate = models.DateField('Attended On', default='')
 
@@ -558,6 +558,7 @@ class Announcement(models.Model):
     def __str__(self):
         return str(self.teacher) + ' - ' + self.announcement
 
+
 DAYS = (
     ("Sun", "Sunday"),
     ("Mon", "Monday"),
@@ -567,6 +568,7 @@ DAYS = (
     ("Fri", "Friday"),
     ("Sat", "Saturday"),
 )
+
 
 class Timetable(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)

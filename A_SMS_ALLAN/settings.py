@@ -141,7 +141,7 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
 
-
+DEFAULT_AUTO_FIELD='django.db.models.AutoField'
 
 
 TEMPLATES[0]['OPTIONS']['context_processors'].append("school.context_processors.semester_processor")
